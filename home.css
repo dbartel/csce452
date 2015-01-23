@@ -1,0 +1,33 @@
+html, body {
+    font-family: helvetica, sans-serif;
+    background: url(home.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color:white;
+}
+
+.content {
+    width:960px;
+    height:100%;
+    margin:0 auto;
+}
+
+
+.title {
+    text-align:right;
+    background-color:rgba(0,0,0,0.3);
+    position:fixed;
+    right:0;
+    bottom:0;
+    padding-right:1px;
+}
+
+.title > h1 {
+    margin-bottom:0;
+}
+
+.title > span {
+    font-weight: bold;
+}
