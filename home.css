@@ -31,3 +31,22 @@ html, body {
 .title > span {
     font-weight: bold;
 }
+
+.assignments {
+    background-color:rgba(0,0,0,0.3);
+    position:fixed;
+    left:0;
+    top:0;
+    font-size:1.5em;
+    font-weight:bold;
+    
+        
+}
+
+a {
+    text-decoration:none;
+}
+
+a:hover {
+    opacity:0.5;
+}
