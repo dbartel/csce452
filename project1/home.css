@@ -1,0 +1,18 @@
+* {
+    font-family:helvetica, sans-serif;
+}
+
+
+.content {
+}
+
+canvas {
+    float:left;
+}
+
+
+.controls {
+    width:25%;
+    float:right;
+    border:1px solid #232323;
+}
