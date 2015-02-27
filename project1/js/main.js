@@ -15,6 +15,10 @@ var Th1 = 90;
 var x2 = 200;
 var y2 = 75;
 var Th2 = 90;
+//
+var jointZeroColor;
+var jointOneColor;
+var jointTwoColor;
 
 
 //Paint Array stores every area that's been "painted"
@@ -29,6 +33,11 @@ var PaintArray = [];
 function setup() {
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
+    
+    jointZeroColor = color(27,195,61);
+    jointOneColor = color(27,44,195);
+    jointTwoColor = color(205,85,85);
+    
 	noLoop();
 }
 
@@ -41,9 +50,17 @@ function draw() {
 
 	drawPaint();
 
+//    fill(27,196,61);
+    stroke(jointZeroColor);
     line(BASE_X, BASE_Y, x0, y0);
+    
+    stroke(jointOneColor);
 	line(x0, y0, x1, y1);
+    
+    stroke(jointTwoColor);
 	line(x1, y1, x2, y2);
+    
+    stroke(0,0,0);
 	calLines();
 	}
 
