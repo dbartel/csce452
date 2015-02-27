@@ -14,6 +14,9 @@ var y2 = 75;
 var Th2 = 90;
 
 
+var PaintArray = [];
+
+
 
 
 /**
@@ -31,6 +34,9 @@ function setup() {
 */
 function draw() {
 	background(204);
+
+	drawPaint();
+
     line(200, 400, x0, y0);
 	line(x0, y0, x1, y1);
 	line(x1, y1, x2, y2);
@@ -115,4 +121,21 @@ function calLines(){
 	text(String(distance0), 500,300);
 	text(String(distance1), 500,200);
 	text(String(distance2), 500,100);
+}
+
+function drawPaint() {
+	for (var i = 0; i < PaintArray.length; i++) {
+		fill(0,0,0);
+		ellipse(PaintArray[i].x, PaintArray[i].y, 10, 10);
+	}
+	noFill();	
+}
+
+
+function addPaint() {
+	PaintArray.push({
+		x: x2,
+		y: y2
+	});
+	redraw();
 }

@@ -1,4 +1,5 @@
 
+//Rotation functions
 var _ROTATE_FUNCTIONS = {
     J0CW: jointZeroCW,
     J0CCW: jointZeroCCW,
@@ -9,16 +10,17 @@ var _ROTATE_FUNCTIONS = {
 };
 
 
-function addHoldListener(btn) {
+//Adds a listener to the element for clicking and holding 
+function addHoldListener(elem) {
     var tm;
 
-    btn.addEventListener("mousedown", function() {
+    elem.addEventListener("mousedown", function() {
         tm  = window.setInterval(function() {
-            _ROTATE_FUNCTIONS[btn.id]();
+            _ROTATE_FUNCTIONS[elem.id]();
         },10);
     });
 
-    btn.addEventListener("mouseup", function() {
+    elem.addEventListener("mouseup", function() {
         clearTimeout(tm);
     })
 
@@ -43,7 +45,12 @@ function initListeners() {
     addHoldListener(J1CCW);
 
     addHoldListener(J0CW);
-    addHoldListener(J0CCW);    
+    addHoldListener(J0CCW);
+
+    var painter = document.getElementById("paint-button");
+    painter.addEventListener("click", function() {
+        addPaint();
+    })
 
 
 }
