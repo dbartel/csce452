@@ -14,6 +14,7 @@ var y2 = 75;
 var Th2 = 90;
 
 
+//Paint Array stores every area that's been "painted"
 var PaintArray = [];
 
 
@@ -123,6 +124,7 @@ function calLines(){
 	text(String(distance2), 500,100);
 }
 
+//draws paint
 function drawPaint() {
 	for (var i = 0; i < PaintArray.length; i++) {
 		fill(0,0,0);
@@ -131,7 +133,7 @@ function drawPaint() {
 	noFill();	
 }
 
-
+//adds coordinate to paint array
 function addPaint() {
 	PaintArray.push({
 		x: x2,

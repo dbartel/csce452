@@ -23,9 +23,6 @@ function addHoldListener(elem) {
     elem.addEventListener("mouseup", function() {
         clearTimeout(tm);
     })
-
-
-
 }
 
 function initListeners() {
@@ -47,6 +44,7 @@ function initListeners() {
     addHoldListener(J0CW);
     addHoldListener(J0CCW);
 
+    //paint doesn't need to be held, so add normal click listener
     var painter = document.getElementById("paint-button");
     painter.addEventListener("click", function() {
         addPaint();
