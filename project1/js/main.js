@@ -1,6 +1,9 @@
 var CANVAS_HEIGHT = window.innerHeight;
 var CANVAS_WIDTH = window.innerWidth * 0.75;
 
+var BASE_X = 200;
+var BASE_Y = 400;
+
 var x0 = 200;
 var y0 = 250;
 var Th0 = 90;
@@ -38,7 +41,7 @@ function draw() {
 
 	drawPaint();
 
-    line(200, 400, x0, y0);
+    line(BASE_X, BASE_Y, x0, y0);
 	line(x0, y0, x1, y1);
 	line(x1, y1, x2, y2);
 	calLines();
@@ -48,8 +51,8 @@ function jointZeroCW(){
 	Th0+=1;
 	var dx=x0;
 	var dy=y0;
-	x0=200-150*cos(Th0);
-	y0=400-150*sin(Th0);
+	x0=BASE_X-150*cos(Th0);
+	y0=BASE_Y-150*sin(Th0);
 	dx=Math.abs(dx-x0);
 	dy=Math.abs(dy-y0);
 	x1=x1+dx;
@@ -63,8 +66,8 @@ function jointZeroCCW(){
 	Th0-=1;
 	var dx=x0;
 	var dy=y0;
-	x0=200-150*cos(Th0);
-	y0=400-150*sin(Th0);
+	x0=BASE_X-150*cos(Th0);
+	y0=BASE_Y-150*sin(Th0);
 	dx=Math.abs(dx-x0);
 	dy=Math.abs(dy-y0);
 	x1=x1-dx;
