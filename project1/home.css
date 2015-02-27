@@ -6,13 +6,53 @@
 .content {
 }
 
+.header {
+    text-align:center;
+    padding-bottom:4px;
+}
+
 canvas {
     float:left;
 }
 
+a {
+    text-decoration:none;
+}
+
+a:visited {
+    color:#0000EE;
+}
+
+a:hover {
+    text-decoration:underline;
+    opacity:0.5;
+}
 
 .controls {
-    width:25%;
     float:right;
     border:1px solid #232323;
+    width:23%;
+    
 }
+
+.btn {
+
+  color: #ffffff;
+  font-size: 20px;
+  background: #3498db;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  text-decoration: none;
+  cursor:pointer;
+}
+
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    width:50%;
+}    
