@@ -15,7 +15,8 @@ var Th1 = 90;
 var x2 = 200;
 var y2 = 75;
 var Th2 = 90;
-//
+
+//joint color globals
 var jointZeroColor;
 var jointOneColor;
 var jointTwoColor;
@@ -50,7 +51,6 @@ function draw() {
 
 	drawPaint();
 
-//    fill(27,196,61);
     stroke(jointZeroColor);
     line(BASE_X, BASE_Y, x0, y0);
     
