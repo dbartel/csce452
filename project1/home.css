@@ -56,3 +56,15 @@ hr {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     width:50%;
 }    
+
+.joint-zero {
+    color:rgb(27,195,61);
+}
+
+.joint-one {
+    color:rgb(27,44,195);
+}
+
+.joint-two {
+    color:rgb(205,85,85);
+}
