@@ -22,7 +22,11 @@ function addHoldListener(elem) {
 
     elem.addEventListener("mouseup", function() {
         clearTimeout(tm);
-    })
+    });
+
+    elem.addEventListener("mouseleave", function() {
+        if (tm) clearTimeout(tm);
+    });
 }
 
 function initListeners() {
