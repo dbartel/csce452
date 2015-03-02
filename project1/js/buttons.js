@@ -48,11 +48,29 @@ function initListeners() {
     addHoldListener(J0CW);
     addHoldListener(J0CCW);
 
+    var paintForeverTimeout;
+
+    var paintForever = document.getElementById("paint-forever");
+
+    paintForever.addEventListener("click", function() {
+        if (! paintForever.checked) {
+            clearTimeout(paintForeverTimeout);
+        }
+    });
+
     //paint doesn't need to be held, so add normal click listener
     var painter = document.getElementById("paint-button");
     painter.addEventListener("click", function() {
-        addPaint();
-    })
+        if (paintForever.checked) {
+            paintForeverTimeout = window.setInterval(function() {
+                addPaint();
+            }, 10)
+        }
+        else {
+
+            addPaint();
+        }
+    });
 
 
 }
