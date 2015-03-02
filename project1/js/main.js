@@ -1,18 +1,18 @@
-var CANVAS_HEIGHT = window.innerHeight;
-var CANVAS_WIDTH = window.innerWidth * 0.75;
+var CANVAS_HEIGHT = 425;
+var CANVAS_WIDTH = 800;
 
-var BASE_X = 200;
+var BASE_X = 400;
 var BASE_Y = 400;
 
-var x0 = 200;
+var x0 = 400;
 var y0 = 250;
 var Th0 = 90;
 
-var x1 = 200;
+var x1 = 400;
 var y1 = 150;
 var Th1 = 90;
 
-var x2 = 200;
+var x2 = 400;
 var y2 = 75;
 var Th2 = 90;
 
@@ -61,11 +61,11 @@ function draw() {
 	line(x1, y1, x2, y2);
     
     stroke(0,0,0);
-	calLines();
+	//calLines();
 	}
 
 function jointZeroCW(){
-	if(Th0!=180)
+	if(Th0!=180 && Th1>Th0-175 )
 		Th0+=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
@@ -77,7 +77,7 @@ function jointZeroCW(){
 }
 
 function jointZeroCCW(){
-	if(Th0!=0)
+	if(Th0!=0 && Th1<Th0+175 )
 		Th0-=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
@@ -89,7 +89,8 @@ function jointZeroCCW(){
 }
 
 function jointOneCW(){
-	Th1+=1;
+	if((Th1<Th0+175) && Th2>Th1-175 )
+		Th1+=1
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
@@ -99,7 +100,8 @@ function jointOneCW(){
 }
 
 function jointOneCCW(){
-	Th1-=1;
+	if(Th1>Th0-175 && (Th2<Th1+175))
+		Th1-=1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
@@ -108,17 +110,27 @@ function jointOneCCW(){
 }
 
 function jointTwoCW(){
-	Th2+=1;
+	if((Th2<Th1+175))
+		Th2+=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
 	redraw();
 }
 
 function jointTwoCCW(){
-	Th2-=1;
+	if(Th2>Th1-175)	
+		Th2-=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
 	redraw();
+}
+
+function onLine(xp1,yp1,xp2,yp2,xc,yc){
+	var m = (yp2-yp1)/(xp2-xp1);
+	if ( ((m * xc) - (m * xp1) + yp1) == yc)
+		return true;
+	else
+		return false;
 }
 
 function calLines(){
@@ -129,6 +141,78 @@ function calLines(){
 	text(String(distance1), 500,200);
 	text(String(distance2), 500,100);
 }
+
+function drawbunny(){
+	for( i = 0; i < 90; i++){
+		addPaint();
+		jointZeroCW();
+	}
+	for( i = 0; i < 90; i++){
+		jointZeroCCW();
+	}
+	for( i = 0; i < 90; i++){
+
+		addPaint();
+		jointZeroCCW();
+	}
+	for( i = 0; i < 100; i++){
+		jointZeroCW();
+	}
+	for( i = 0; i < 82; i++){
+		jointOneCCW();
+		jointTwoCCW();
+	}
+	for( i = 0; i < 40; i++){
+		addPaint();
+		jointOneCCW();
+		jointTwoCCW();
+	}
+	for( i = 0; i < 60; i++){
+		addPaint();
+		jointZeroCW();
+		if (i < 20 || i > 40 || i > 60){
+			jointOneCW();
+		}	
+	}
+	for( i = 0; i < 79; i++){
+		jointZeroCCW();
+	}
+	for( i = 0; i < 40; i++){
+		jointTwoCW();
+	}
+	for( i = 0; i < 165; i++){
+		jointOneCW();
+		jointTwoCW();
+	}
+	for( i = 0; i < 40; i++){
+		addPaint();
+		jointOneCW();
+		jointTwoCW();
+	}
+	for( i = 0; i < 60; i++){
+		addPaint();
+		jointZeroCCW();
+		if (i < 20 || i > 40 || i > 60){
+			jointOneCCW();
+		}	
+	}
+	for( i = 0; i < 23; i++){
+		addPaint();
+		if (i % 2 == 0) jointZeroCCW();
+		jointOneCCW();
+	}
+	for( i = 0; i < 10; i++){
+		jointTwoCW();
+		addPaint();
+	}
+	for( i = 0; i < 10; i++){
+		jointTwoCW();
+		jointOneCCW();
+		addPaint();
+	}
+
+}
+
 
 //draws paint
 function drawPaint() {
