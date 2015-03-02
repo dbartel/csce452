@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\usepackage{amsmath}
 \title{CSCE 452 Project 1 Report}
 
 \author{Raegan Lucero
@@ -14,8 +14,141 @@
 
 \section*{Deriving Forward Kinematics}
 
+%% b = \beta
+%% c = y
+%% a = \alpha
+
+
 \section*{Typos in Handout 1}
+\textbf{Euler 1}
+$
+\begin{bmatrix}
+\cos\beta\cos y & -\cos\beta\sin y & \sin\beta \\
 
+\sin\alpha\sin\beta\cos y + \cos\alpha\sin y & -\sin\alpha\sin\beta\sin y & -\sin\alpha\cos\beta \\
 
+-\cos\alpha\sin\beta\cos y + \sin\alpha\sin y & \cos\alpha\sin\beta\sin y + \sin\alpha\cos y & \cos\alpha\cos\beta
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 2}
+$
+\begin{bmatrix}
+\cos\beta\cos y & -\sin\beta & \cos\beta\sin y \\
+
+\cos\alpha\sin\beta\sin y + \sin\alpha\sin y & \cos\alpha\cos\beta & \cos\alpha\sin\beta\sin y - \sin\alpha\cos y \\
+
+\sin\alpha\sin\beta\cos y - \cos\alpha\sin y & \sin\alpha\cos\beta & \sin\alpha\sin\beta\sin y + \cos\alpha\cos y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 3}
+$
+\begin{bmatrix}
+\sin\alpha\sin\beta\sin y + \cos\alpha\cos y & \sin\alpha\sin\beta\cos y - \cos\alpha\sin y & \sin\alpha\cos\beta \\
+
+\cos\beta\sin y & \cos\beta\cos y & -\sin\beta \\
+\cos\alpha\sin\beta\sin y - sin\alpha\cos y & \cos\alpha\sin\beta\cos y + \sin\alpha\sin y & \cos\alpha\cos\beta
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 4}
+$
+\begin{bmatrix}
+\cos\alpha\cos\beta & -\cos\alpha\sin\beta\cos y + \sin\alpha\sin y & \cos\alpha\sin\beta\sin y + \sin\alpha\cos y \\
+
+\sin\beta & \cos\beta\cos y & -\cos\beta\sin y \\
+
+-\sin\alpha\cos\beta & \sin\alpha\sin\beta\cos y + \cos\alpha\sin y & -sin\alpha\sin\beta\sin y + \cos\alpha\cos y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 5}
+$
+\begin{bmatrix}
+-\sin\alpha\sin\beta\sin y + \cos\alpha\cos y & -\sin\alpha\cos\beta & \sin\alpha\sin\beta\cos y + \cos\alpha\sin y \\
+\cos\alpha\sin\beta\sin y + \sin\alpha\cos y & \cos\alpha\cos\beta & -\cos\alpha\sin\beta\cos y + \sin\alpha\sin y \\
+-\cos\beta\sin y & \sin\beta & \cos\beta\cos y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 6}
+$
+\begin{bmatrix}
+\cos\alpha\cos\beta & \cos\alpha\sin\beta\sin y - \sin\alpha\cos y & \cos\alpha\sin\beta \cos y + \sin\alpha\sin y \\
+
+\sin\alpha\cos\beta & \sin\alpha\sin\beta\sin y + \cos\alpha\cos y & \sin\alpha\sin\beta\cos y - \cos\alpha\sin y \\
+
+-\sin\beta & \cos\beta\sin y & \cos\beta\cos y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 7}
+$
+\begin{bmatrix}
+\cos\beta & \sin\beta\sin y & \sin\beta\cos y \\
+
+\sin\alpha\sin\beta & \cos\alpha\cos y - \sin\alpha\cos\beta\sin y & -\cos\alpha\sin y - \sin\alpha\cos\beta\cos y \\
+
+-\cos\alpha\sin\beta & \sin\alpha\cos y + \cos\alpha\cos\beta\sin y & -\sin\alpha\sin y + \cos\alpha\cos\beta\cos y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 8}
+$
+\begin{bmatrix}
+\cos\beta & -\sin\beta\cos y & \sin\beta\sin 7 \\
+
+\cos\alpha\sin\beta & -\sin\alpha\sin y + \cos\alpha\cos\beta\cos y & -\cos\alpha\cos\beta\sin y - \sin\alpha\cos y \\
+
+\sin\alpha\sin\beta & \sin\alpha\cos\beta\cos y + \cos\alpha\sin y & \cos\alpha - \sin\alpha\cos\beta\sin y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 9}
+$
+\begin{bmatrix}
+\cos\alpha\cos y - \sin\alpha\cos\beta\sin y & \sin\alpha\sin\beta & \sin\alpha\cos\beta\cos y + \cos\alpha\sin y \\
+
+\sin\beta\sin y & \cos\beta & -\sin\beta\cos y \\
+
+-\cos\alpha\cos\beta\sin y - \sin\alpha\cos y & \cos\alpha\sin\beta & -\sin\alpha\sin y + \cos\alpha\cos\beta\cos y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 10}
+$
+\begin{bmatrix}
+-\sin\alpha\sin y + \cos\alpha\cos\beta\cos y & -\cos\alpha\sin\beta & \sin\alpha\cos y + \cos\alpha\cos\beta\sin y \\
+
+\sin\beta\cos y & \cos\beta & \sin\beta\sin y \\
+
+-\cos\alpha\sin y - \sin\alpha\cos\beta\cos y & \sin\alpha\sin\beta \\
+
+-\cos\alpha\sin y - \sin\alpha\cos\beta\cos y & \sin\alpha\sin\beta & \cos\alpha\cos y - \sin\alpha\cos\beta\sin y
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 11}
+$
+\begin{bmatrix}
+\cos\alpha\cos y - \sin\alpha\cos\beta\sin y & -\cos\alpha\sin y - \sin\alpha\cos\beta\cos y & \sin\alpha\sin\beta \\
+
+\sin\alpha\cos y + \cos\alpha\cos\beta\sin y & -\sin\alpha\sin y \\
+
+\sin\beta\sin y & \sin\beta\cos y & \cos\beta \\
+\end{bmatrix}
+$
+\\ \ \\
+\textbf{Euler 12}
+$
+\begin{bmatrix}
+-\sin\alpha\sin y + \cos\alpha\cos\beta\cos y & -\cos\alpha\cos\beta\sin y - \sin\alpha\cos y & \cos\alpha\sin\beta \\
+
+\sin\alpha\cos\beta\cos y + \cos\alpha\sin y & \cos\alpha\cos y - \sin\alpha\cos\beta\sin y & \sin\alpha\sin\beta \\
+
+-\sin\beta\cos y & \sin\beta\sin y & \cos\beta
+\end{bmatrix}
+$
 
 \end{document}
