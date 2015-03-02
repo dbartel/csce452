@@ -65,59 +65,45 @@ function draw() {
 	}
 
 function jointZeroCW(){
-	Th0+=1;
-	var dx=x0;
-	var dy=y0;
+	if(Th0!=180)
+		Th0+=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
-	dx=Math.abs(dx-x0);
-	dy=Math.abs(dy-y0);
-	x1=x1+dx;
-	y1=y1+dy;
-	x2=x2+dx;
-	y2=y2+dy;
+	x1=x0-100*cos(Th1);
+	y1=y0-100*sin(Th1);
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
 	redraw();
 }
 
 function jointZeroCCW(){
-	Th0-=1;
-	var dx=x0;
-	var dy=y0;
+	if(Th0!=0)
+		Th0-=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
-	dx=Math.abs(dx-x0);
-	dy=Math.abs(dy-y0);
-	x1=x1-dx;
-	y1=y1+dy;
-	x2=x2-dx;
-	y2=y2+dy;
+	x1=x0-100*cos(Th1);
+	y1=y0-100*sin(Th1);
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
 	redraw();
 }
 
 function jointOneCW(){
 	Th1+=1;
-	var dx=x1;
-	var dy=y1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
-	dx=Math.abs(dx-x1);
-	dy=Math.abs(dy-y1);
-	x2=x2+dx;
-	y2=y2+dy;
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
 	
 	redraw();
 }
 
 function jointOneCCW(){
 	Th1-=1;
-	var dx=x1;
-	var dy=y1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
-	dx=Math.abs(dx-x1);
-	dy=Math.abs(dy-y1);
-	x2=x2-dx;
-	y2=y2+dy;
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
 	redraw();
 }
 
