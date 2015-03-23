@@ -27,9 +27,10 @@ function addHoldListener(elem) {
     var tm;
 
     elem.addEventListener("mousedown", function() {
-        tm  = window.setInterval(function() {
+		_ROTATE_FUNCTIONS[elem.id]();
+         tm  = window.setInterval(function() {
             _ROTATE_FUNCTIONS[elem.id]();
-        },10);
+        },10); 
     });
 
     elem.addEventListener("mouseup", function() {
@@ -38,7 +39,7 @@ function addHoldListener(elem) {
 
     elem.addEventListener("mouseleave", function() {
         if (tm) clearTimeout(tm);
-    });
+    }); 
 }
 
 function initListeners() {

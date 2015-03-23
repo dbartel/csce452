@@ -178,22 +178,54 @@ function addPaint() {
 
 // x/y functions
 function jointTwoPX() {
-	// ...
+	x1 += 1;
+	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
+	x2 += 1;
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
+	redraw();
 }
 function jointTwoMX() {
-	// ...
+	x1 -= 1;
+	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
+	x2 -= 1;
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
+	redraw();
 }
 function jointTwoPY() {
-	// ...
+	y1 -= 1;
+	x1 = sqrt(abs(10000 - sq(y1 - y0))) - x0;
+	console.log(x1 + ", " + y1);
+	y2 -= 1;
+	x2 = sqrt(abs(5625 - sq(y2 - y1))) - x1;
+	console.log(x2 + ", " + y2);
+	redraw();
 }
 function jointTwoMY() {
-	// ...
+	y1 += 1;
+	x1 = -1 * (sqrt(10000 - sq(y1 - y0)) - x0);
+	console.log(x1 + ", " + y1);
+	y2 += 1;
+	x2 = -1 * (sqrt(5625 - sq(y2 - y1)) - x1);
+	console.log(x2 + ", " + y2);
+	redraw();
 }
 function jointOnePX() {
-	// ...
+	x0 += 1;
+	y0 = -1 * (sqrt(22500 - sq(x0 - BASE_X)) - BASE_Y);
+	x1 += 1;
+	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
+	x2 += 1;
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
+	redraw();
 }
 function jointOneMX() {
-	// ...
+	x0 -= 1;
+	y0 = -1 * (sqrt(22500 - sq(x0 - BASE_X)) - BASE_Y);
+	x1 -= 1;
+	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
+	x2 -= 1;
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
+	redraw();
 }
 function jointOnePY() {
 	// ...
@@ -202,14 +234,30 @@ function jointOneMY() {
 	// ...
 }
 function jointZeroPX() {
-	// ...
+	BASE_X += 1;
+	x0 += 1;
+	x1 += 1;
+	x2 += 1;
+	redraw();
 }
 function jointZeroMX() {
-	// ...
+	BASE_X -= 1;
+	x0 -= 1;
+	x1 -= 1;
+	x2 -= 1;
+	redraw();
 }
 function jointZeroPY() {
-	// ...
+	BASE_Y -= 1;
+	y0 -= 1;
+	y1 -= 1;
+	y2 -= 1;
+	redraw();
 }
 function jointZeroMY() {
-	// ...
+	BASE_Y += 1;
+	y0 += 1;
+	y1 += 1;
+	y2 += 1;
+	redraw();
 }
