@@ -16,6 +16,12 @@ var x2 = 400;
 var y2 = 75;
 var Th2 = 90;
 
+var ThH;
+var legX;
+var legY;
+var leg;
+	
+
 //joint color globals
 var jointZeroColor;
 var jointOneColor;
@@ -69,10 +75,18 @@ function jointZeroCW(){
 		Th0+=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
-	x1=x0-100*cos(Th1);
+	legX = dist(x0,0,x1,0);
+	legY = dist(0,y0,0,y1);
+	leg = dist(x0,y0,x1,y1);
+	ThH = acos(legX,leg);
+	ThH += 1;
+	x1=BASE_X-leg*cos(ThH);
+	y1=BASE_Y-leg*sin(ThH);
+	/*x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
-	y2=y1-75*sin(Th2);
+	y2=y1-75*sin(Th2);*/
+	
 	redraw();
 }
 
@@ -142,76 +156,6 @@ function calLines(){
 	text(String(distance2), 500,100);
 }
 
-function drawbunny(){
-	for( i = 0; i < 90; i++){
-		addPaint();
-		jointZeroCW();
-	}
-	for( i = 0; i < 90; i++){
-		jointZeroCCW();
-	}
-	for( i = 0; i < 90; i++){
-
-		addPaint();
-		jointZeroCCW();
-	}
-	for( i = 0; i < 100; i++){
-		jointZeroCW();
-	}
-	for( i = 0; i < 82; i++){
-		jointOneCCW();
-		jointTwoCCW();
-	}
-	for( i = 0; i < 40; i++){
-		addPaint();
-		jointOneCCW();
-		jointTwoCCW();
-	}
-	for( i = 0; i < 60; i++){
-		addPaint();
-		jointZeroCW();
-		if (i < 20 || i > 40 || i > 60){
-			jointOneCW();
-		}	
-	}
-	for( i = 0; i < 79; i++){
-		jointZeroCCW();
-	}
-	for( i = 0; i < 40; i++){
-		jointTwoCW();
-	}
-	for( i = 0; i < 165; i++){
-		jointOneCW();
-		jointTwoCW();
-	}
-	for( i = 0; i < 40; i++){
-		addPaint();
-		jointOneCW();
-		jointTwoCW();
-	}
-	for( i = 0; i < 60; i++){
-		addPaint();
-		jointZeroCCW();
-		if (i < 20 || i > 40 || i > 60){
-			jointOneCCW();
-		}	
-	}
-	for( i = 0; i < 23; i++){
-		addPaint();
-		if (i % 2 == 0) jointZeroCCW();
-		jointOneCCW();
-	}
-	for( i = 0; i < 10; i++){
-		jointTwoCW();
-		addPaint();
-	}
-	for( i = 0; i < 10; i++){
-		jointTwoCW();
-		jointOneCCW();
-		addPaint();
-	}
-
-}
 
 
 //draws paint
