@@ -7,17 +7,17 @@ var _ROTATE_FUNCTIONS = {
     J1CCW: jointOneCCW,
     J2CW: jointTwoCW,
     J2CCW: jointTwoCCW,
-    J2PX: jointTwoPX
-    J2MX: jointTwoMX
-    J2PY: jointTwoPY
-    J2MY: jointTwoMY
-    J1PX: jointOnePX
-    J1MX: jointOneMX
-    J1PY: jointOnePY
-    J1MY: jointOneMY
-    J0PX: jointZeroPX
-    J0MX: jointZeroMX
-    J0PY: jointZeroPY
+    J2PX: jointTwoPX,
+    J2MX: jointTwoMX,
+    J2PY: jointTwoPY,
+    J2MY: jointTwoMY,
+    J1PX: jointOnePX,
+    J1MX: jointOneMX,
+    J1PY: jointOnePY,
+    J1MY: jointOneMY,
+    J0PX: jointZeroPX,
+    J0MX: jointZeroMX,
+    J0PY: jointZeroPY,
     J0MY: jointZeroMY
 };
 
