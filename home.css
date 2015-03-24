@@ -52,12 +52,3 @@ a {
 a:hover {
     opacity:0.5;
 }
-
-.screenshot{
- background-color:rgba(0,0,0,0.3);
-    position:fixed;
-    left:0;
-	bottom: 0;
-    font-size:1.5em;
-    font-weight:bold;
-}
