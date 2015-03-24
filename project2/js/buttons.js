@@ -52,6 +52,8 @@ function initListeners() {
     var J3CW = document.getElementById("J3CW");
     var J3CCW = document.getElementById("J3CCW");
 
+    var paint_size = document.getElementById("paint-size");
+
 
     var J2PX = document.getElementById("J2PX");
     addHoldListener(J2PX);
@@ -61,7 +63,7 @@ function initListeners() {
     addHoldListener(J2PY);
     var J2MY = document.getElementById("J2MY");
     addHoldListener(J2MY);
-    var J1PX = document.getElementById("J1PX");
+/*    var J1PX = document.getElementById("J1PX");
     addHoldListener(J1PX);
     var J1MX = document.getElementById("J1MX");
     addHoldListener(J1MX);
@@ -75,8 +77,8 @@ function initListeners() {
     addHoldListener(J0MX);
     var J0PY = document.getElementById("J0PY");
     addHoldListener(J0PY);
-    var J0MY = document.getElementById("J0MY");
-    addHoldListener(J0MY);
+    var J0MY = document.getElementById("J0MY"); 
+    addHoldListener(J0MY); */
 
     addHoldListener(J2CW);
     addHoldListener(J2CCW);
@@ -102,12 +104,12 @@ function initListeners() {
     painter.addEventListener("click", function() {
         if (paintForever.checked) {
             paintForeverTimeout = window.setInterval(function() {
-                addPaint();
+                addPaint(paint_size.value);
             }, 10)
         }
         else {
 
-            addPaint();
+            addPaint(paint_size.value);
         }
     });
 
