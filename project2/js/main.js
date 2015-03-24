@@ -254,15 +254,15 @@ function jointTwoPX() {
 	}
 	else
 	{
-		if(Th2>Th1)
-		{
-			Th1+=.1;
-			Th2+=.2;
+		if(Th1>90)
+		{	
+			Th1+=.2
+			Th2+=.1;
 		}
 		else
 		{
-			Th1-=.1;
-			Th2-=.2;
+			Th1+=.2;
+			Th2-=.1;
 		}
 		/*if(round(Th1)==round(Th0))
 		{
@@ -377,15 +377,15 @@ function jointTwoPX() {
 }
 function jointTwoMX() {
 
-	if(Th2>Th1)
-	{
-		Th1-=.1;
-		Th2-=.2;
+	if(Th1>90)
+	{	
+		Th1-=.2
+		Th2-=.1;
 	}
 	else
 	{
-		Th1+=.1;
-		Th2+=.2;
+		Th1-=.2;
+		Th2+=.1;
 	}
 	/*if(round(Th1)==round(Th0))
 	{
