@@ -10,15 +10,7 @@ var _ROTATE_FUNCTIONS = {
     J2PX: jointTwoPX,
     J2MX: jointTwoMX,
     J2PY: jointTwoPY,
-    J2MY: jointTwoMY,
-    J1PX: jointOnePX,
-    J1MX: jointOneMX,
-    J1PY: jointOnePY,
-    J1MY: jointOneMY,
-    J0PX: jointZeroPX,
-    J0MX: jointZeroMX,
-    J0PY: jointZeroPY,
-    J0MY: jointZeroMY
+    J2MY: jointTwoMY
 };
 
 

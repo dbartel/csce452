@@ -245,15 +245,44 @@ function jointTwoPX() {
 	console.log("Th0 " + Th0);
 	console.log("Th1 " + Th1);
 	console.log("Th2 " + Th2);*/
-	var nX = x2+5;
-	var nY = y2;
+	var nX = round(x2+1);
+	var nY = round(y2);
 	if(dist(nX,nY,BASE_X,BASE_Y)>325)
 	{
 		//you done goofed
+		console.log("fook");
 	}
 	else
 	{
-		while(nX!=x2)
+		if(Th2>Th1)
+		{
+			Th1+=.1;
+			Th2+=.2;
+		}
+		else
+		{
+			Th1-=.1;
+			Th2-=.2;
+		}
+		/*if(round(Th1)==round(Th0))
+		{
+			if(Th2<90)
+				Th2+=.5;
+			else
+				Th2-=.5;
+			Th0-=.2;
+			Th1+=.4;
+		}*/
+		x0=BASE_X-150*cos(Th0);
+		y0=BASE_Y-150*sin(Th0);
+		x1=x0-100*cos(Th1);
+		y1=y0-100*sin(Th1);
+		x2=x1-75*cos(Th2);
+		y2=y1-75*sin(Th2);
+	}
+	/*else
+	{
+		while(nX!=round(x2))
 		{
 			if(Th2>90)
 			{
@@ -267,7 +296,8 @@ function jointTwoPX() {
 				x2=x1-75*cos(Th2);
 				y2=y1-75*sin(Th2);
 			}
-			if((Th2==0||Th2==180)&&nX!=x2)
+			console.log("here");
+			if((Th2==0||Th2==180)&&nX!=round(x2))
 			{
 				if(Th1>90)
 				{
@@ -285,7 +315,7 @@ function jointTwoPX() {
 					x2=x1-75*cos(Th2);
 					y2=y1-75*sin(Th2);
 				}
-				if((Th1==0||Th1==180)&&nX!=x2)
+				if((Th1==0||Th1==180)&&nX!=round(x2))
 				{
 					if(Th0>90)
 					{
@@ -310,36 +340,136 @@ function jointTwoPX() {
 				}
 			}
 		}
-		while(nX!=x2&&nY!=y2)
+		var cas;
+		if(Th0!=0&&Th0!=180)
+			cas = 1;
+		else if(Th1!=0&&Th2!=180)
+			cas = 2;
+		else
+			cas = 3;
+		console.log("done with first");
+		while(nX!=round(x2)&&nY!=round(y2))
 		{
-			
+			if(cas==1)
+			{
+				while(round(acos((nX-400-x2*cos(Th2))/150-2*cos(Th1)/3))!=round(180+asin(2*sin(Th1)/3-(nY-y2*cos(Th2)))))
+				{
+					if(Th1==180)
+						Th1=0;
+					else
+						Th1+=1;
+						
+					console.log("in loop");
+				}
+				Th0=round(acos((nX-400-x2*cos(Th2))/150-2*cos(Th1)/3));
+			}
+			else if (cas == 2)
+			{
+				console.log("rip");
+			}
+			else
+			{
+				console.log("rip");
+			}
 		}
-	}
+	}*/
 	redraw();
 }
 function jointTwoMX() {
-	/*x1 -= 1;
-	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
-	x2 -= 1;
-	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);*/
+
+	if(Th2>Th1)
+	{
+		Th1-=.1;
+		Th2-=.2;
+	}
+	else
+	{
+		Th1+=.1;
+		Th2+=.2;
+	}
+	/*if(round(Th1)==round(Th0))
+	{
+		if(Th2<90)
+			Th2-=.5;
+		else
+			Th2+=.5;
+		Th0+=.2;
+		Th1-=.4;
+	}*/
+	x0=BASE_X-150*cos(Th0);
+	y0=BASE_Y-150*sin(Th0);
+	x1=x0-100*cos(Th1);
+	y1=y0-100*sin(Th1);
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
 	redraw();
 }
 function jointTwoPY() {
-	/*y1 -= 1;
-	x1 = sqrt(abs(10000 - sq(y1 - y0))) - x0;
-	console.log(x1 + ", " + y1);
-	y2 -= 1;
-	x2 = sqrt(abs(5625 - sq(y2 - y1))) - x1;
-	console.log(x2 + ", " + y2);*/
+	var nX = round(x2);
+	var nY = round(y2+1);
+	if(dist(nX,nY,BASE_X,BASE_Y)>325)
+	{
+		//you done goofed
+		console.log("fook");
+	}
+	else
+	{
+		if(Th2>Th1)
+		{
+			Th1+=.1;
+			Th2-=.2;
+		}
+		else
+		{
+			Th1-=.1;
+			Th2+=.2;
+		}
+		/*if(round(Th1)==round(Th0))
+		{
+			if(Th2<90)
+				Th2-=.5;
+			else
+				Th2+=.5;
+			Th0+=.2;
+			Th1-=.4;
+		}*/
+		x0=BASE_X-150*cos(Th0);
+		y0=BASE_Y-150*sin(Th0);
+		x1=x0-100*cos(Th1);
+		y1=y0-100*sin(Th1);
+		x2=x1-75*cos(Th2);
+		y2=y1-75*sin(Th2);
+	}
 	redraw();
 }
 function jointTwoMY() {
-	/*y1 += 1;
-	x1 = -1 * (sqrt(10000 - sq(y1 - y0)) - x0);
-	console.log(x1 + ", " + y1);
-	y2 += 1;
-	x2 = -1 * (sqrt(5625 - sq(y2 - y1)) - x1);
-	console.log(x2 + ", " + y2);*/
+	
+	if(Th2>Th1)
+	{
+		Th1-=.1;
+		Th2+=.2;
+	}
+	else
+	{
+		Th1+=.1;
+		Th2-=.2;
+	}
+	/*if(round(Th1)==round(Th0))
+	{
+		if(Th2<90)
+			Th2-=.5;
+		else
+			Th2+=.5;
+		Th0+=.2;
+		Th1-=.4;
+	}*/
+	x0=BASE_X-150*cos(Th0);
+	y0=BASE_Y-150*sin(Th0);
+	x1=x0-100*cos(Th1);
+	y1=y0-100*sin(Th1);
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
+	
 	redraw();
 }
 //not using these
