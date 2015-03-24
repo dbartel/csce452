@@ -16,6 +16,10 @@ var x2 = 400;
 var y2 = 75;
 var Th2 = 90;
 
+var Thk0 = 90;
+var Thk1 = 0;
+var Thk2 = 0;
+
 var ThH;
 var legX;
 var legY;
@@ -74,6 +78,7 @@ function jointZeroCW(){
 	Th0+=1;
 	Th1+=1;
 	Th2+=1;
+	Thk0-=1;
 	/*x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
 	legX = dist(x0,0,x1,0);
@@ -89,56 +94,101 @@ function jointZeroCW(){
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
-	
-	redraw();
+	if(y2>BASE_Y||y1>BASE_Y||y0>BASE_Y)
+	{
+		Th0-=1;
+		Th1-=1;
+		Th2-=1;
+		Thk0+=1;
+	}
+	else
+		redraw();
 }
 
 function jointZeroCCW(){
 	Th0-=1;
 	Th1-=1;
 	Th2-=1;
+	Thk0+=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
-	redraw();
+	if(y2>BASE_Y||y1>BASE_Y||y0>BASE_Y)
+	{
+		Th0+=1;
+		Th1+=1;
+		Th2+=1;
+		Thk0-=1;
+	}
+	else
+		redraw();
 }
 
 function jointOneCW(){
 	Th1+=1;
 	Th2+=1;
+	Thk1-=1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
-	
-	redraw();
+	if(y2>BASE_Y||y1>BASE_Y)
+	{
+		Th1-=1;
+		Th2-=1;
+		Thk1+=1;
+	}
+	else
+		redraw();
 }
 
 function jointOneCCW(){
 	Th1-=1;
 	Th2-=1;
+	Thk1+=1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
-	redraw();
+	if(y2>BASE_Y||y1>BASE_Y)
+	{
+		Th1+=1;
+		Th2+=1;
+		Thk1-=1;
+	}
+	else
+		redraw();
 }
 
 function jointTwoCW(){
 	Th2+=1;
+	Thk2-=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
-	redraw();
+	if(y2>BASE_Y)
+	{
+		Th2-=1;
+		Thk2-=1;
+	}
+	else
+		redraw();
 }
 
 function jointTwoCCW(){
 	Th2-=1;
+	Thk2+=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
-	redraw();
+	if(y2>BASE_Y)
+	{
+		Thk2-=1;
+		Th2+=1;
+	}
+	else
+		redraw();
 }
 
 function onLine(xp1,yp1,xp2,yp2,xc,yc){
@@ -184,9 +234,87 @@ function jointTwoPX() {
 	/*x1 += 1;
 	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
 	x2 += 1;
-	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);*/
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
 	//get (x,y) position
-	
+	var phi;
+	var dis;
+	dis = dist(BASE_X,BASE_Y,x2,y2);
+	console.log("dis " + dis);
+	phi = acos((x2-BASE_X)/dis);
+	console.log("x y pos " + x2 + " " + y2);
+	console.log("Th0 " + Th0);
+	console.log("Th1 " + Th1);
+	console.log("Th2 " + Th2);*/
+	var nX = x2+5;
+	var nY = y2;
+	if(dist(nX,nY,BASE_X,BASE_Y)>325)
+	{
+		//you done goofed
+	}
+	else
+	{
+		while(nX!=x2)
+		{
+			if(Th2>90)
+			{
+				Th2-=1;
+				x2=x1-75*cos(Th2);
+				y2=y1-75*sin(Th2);
+			}
+			else
+			{
+				Th2+=1;
+				x2=x1-75*cos(Th2);
+				y2=y1-75*sin(Th2);
+			}
+			if((Th2==0||Th2==180)&&nX!=x2)
+			{
+				if(Th1>90)
+				{
+					Th1-=1;
+					x1=x0-100*cos(Th1);
+					y1=y0-100*sin(Th1);
+					x2=x1-75*cos(Th2);
+					y2=y1-75*sin(Th2);
+				}
+				else
+				{
+					Th1+=1;
+					x1=x0-100*cos(Th1);
+					y1=y0-100*sin(Th1);
+					x2=x1-75*cos(Th2);
+					y2=y1-75*sin(Th2);
+				}
+				if((Th1==0||Th1==180)&&nX!=x2)
+				{
+					if(Th0>90)
+					{
+						Th0-=1;
+						x0=BASE_X-150*cos(Th0);
+						y0=BASE_Y-150*sin(Th0);
+						x1=x0-100*cos(Th1);
+						y1=y0-100*sin(Th1);
+						x2=x1-75*cos(Th2);
+						y2=y1-75*sin(Th2);
+					}
+					else
+					{
+						Th0+=1;
+						x0=BASE_X-150*cos(Th0);
+						y0=BASE_Y-150*sin(Th0);
+						x1=x0-100*cos(Th1);
+						y1=y0-100*sin(Th1);
+						x2=x1-75*cos(Th2);
+						y2=y1-75*sin(Th2);
+					}
+				}
+			}
+		}
+		while(nX!=x2&&nY!=y2)
+		{
+			
+		}
+	}
 	redraw();
 }
 function jointTwoMX() {
