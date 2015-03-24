@@ -214,16 +214,17 @@ function calLines(){
 function drawPaint() {
 	for (var i = 0; i < PaintArray.length; i++) {
 		fill(0,0,0);
-		ellipse(PaintArray[i].x, PaintArray[i].y, 10, 10);
+		ellipse(PaintArray[i].x, PaintArray[i].y, PaintArray[i].sz, PaintArray[i].sz);
 	}
 	noFill();	
 }
 
 //adds coordinate to paint array
-function addPaint() {
+function addPaint(size) {
 	PaintArray.push({
 		x: x2,
-		y: y2
+		y: y2,
+		sz: size
 	});
 	redraw();
 }
