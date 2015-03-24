@@ -71,9 +71,10 @@ function draw() {
 	}
 
 function jointZeroCW(){
-	if(Th0!=180 && Th1>Th0-175 )
-		Th0+=1;
-	x0=BASE_X-150*cos(Th0);
+	Th0+=1;
+	Th1+=1;
+	Th2+=1;
+	/*x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
 	legX = dist(x0,0,x1,0);
 	legY = dist(0,y0,0,y1);
@@ -81,18 +82,21 @@ function jointZeroCW(){
 	ThH = acos(legX,leg);
 	ThH += 1;
 	x1=BASE_X-leg*cos(ThH);
-	y1=BASE_Y-leg*sin(ThH);
-	/*x1=x0-100*cos(Th1);
+	y1=BASE_Y-leg*sin(ThH);*/
+	x0=BASE_X-150*cos(Th0);
+	y0=BASE_Y-150*sin(Th0);
+	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
-	y2=y1-75*sin(Th2);*/
+	y2=y1-75*sin(Th2);
 	
 	redraw();
 }
 
 function jointZeroCCW(){
-	if(Th0!=0 && Th1<Th0+175 )
-		Th0-=1;
+	Th0-=1;
+	Th1-=1;
+	Th2-=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
 	x1=x0-100*cos(Th1);
@@ -103,8 +107,8 @@ function jointZeroCCW(){
 }
 
 function jointOneCW(){
-	if((Th1<Th0+175) && Th2>Th1-175 )
-		Th1+=1
+	Th1+=1;
+	Th2+=1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
@@ -114,8 +118,8 @@ function jointOneCW(){
 }
 
 function jointOneCCW(){
-	if(Th1>Th0-175 && (Th2<Th1+175))
-		Th1-=1;
+	Th1-=1;
+	Th2-=1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
@@ -124,16 +128,14 @@ function jointOneCCW(){
 }
 
 function jointTwoCW(){
-	if((Th2<Th1+175))
-		Th2+=1;
+	Th2+=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
 	redraw();
 }
 
 function jointTwoCCW(){
-	if(Th2>Th1-175)	
-		Th2-=1;
+	Th2-=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
 	redraw();
@@ -177,38 +179,43 @@ function addPaint() {
 }
 
 // x/y functions
+//i'm going to use these buttons
 function jointTwoPX() {
-	x1 += 1;
+	/*x1 += 1;
 	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
 	x2 += 1;
-	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);*/
+	//get (x,y) position
+	
 	redraw();
 }
 function jointTwoMX() {
-	x1 -= 1;
+	/*x1 -= 1;
 	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
 	x2 -= 1;
-	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
+	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);*/
 	redraw();
 }
 function jointTwoPY() {
-	y1 -= 1;
+	/*y1 -= 1;
 	x1 = sqrt(abs(10000 - sq(y1 - y0))) - x0;
 	console.log(x1 + ", " + y1);
 	y2 -= 1;
 	x2 = sqrt(abs(5625 - sq(y2 - y1))) - x1;
-	console.log(x2 + ", " + y2);
+	console.log(x2 + ", " + y2);*/
 	redraw();
 }
 function jointTwoMY() {
-	y1 += 1;
+	/*y1 += 1;
 	x1 = -1 * (sqrt(10000 - sq(y1 - y0)) - x0);
 	console.log(x1 + ", " + y1);
 	y2 += 1;
 	x2 = -1 * (sqrt(5625 - sq(y2 - y1)) - x1);
-	console.log(x2 + ", " + y2);
+	console.log(x2 + ", " + y2);*/
 	redraw();
 }
+//not using these
+
 function jointOnePX() {
 	x0 += 1;
 	y0 = -1 * (sqrt(22500 - sq(x0 - BASE_X)) - BASE_Y);
