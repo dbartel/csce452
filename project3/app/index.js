@@ -5,8 +5,12 @@ var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
 io.on("connection", function(socket) {
-	console.log("A user connected")
-})
+	console.log("A user connected");
+	socket.on("robot", function(msg) {
+		console.log(msg);
+	});
+});
+
 
 
 app.use(express.static("public"));
