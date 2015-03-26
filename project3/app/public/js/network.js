@@ -1,8 +1,9 @@
 var socket = io();
 
-io.on("connection", function(socket) {
-	socket.on("robot", function(msg) {
-		console.log(msg);
+socket.on("robot", function(msg) {
+	_ROTATE_FUNCTIONS[msg]();
+});
 
-	});
+socket.on("paint", function(msg) {
+	addPaint(msg);
 });
