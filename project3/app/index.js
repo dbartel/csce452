@@ -7,8 +7,15 @@ var io = require("socket.io")(http);
 io.on("connection", function(socket) {
 	console.log("A user connected");
 	socket.on("robot", function(msg) {
-		console.log(msg);
+		console.log("Robot command received: " + msg);
+		io.emit('robot', msg);
 	});
+
+	socket.on("paint", function(msg) {
+		console.log("Paint command received");
+		io.emit("paint", msg);
+	});
+
 });
 
 
