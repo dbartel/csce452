@@ -46,11 +46,11 @@ io.on("connection", function(socket) {
 app.use(express.static("public"));
 
 app.get("/", function(req, res) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/public/home.html");
 });
 
 app.get("/server", function(req, res) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/public/server.html");
 });
 
 app.get("/client", function(req, res) {
