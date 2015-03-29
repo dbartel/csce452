@@ -23,9 +23,20 @@ io.on("connection", function(socket) {
 app.use(express.static("public"));
 
 app.get("/", function(req, res) {
-    res.sendFile(__dirname + "/index.html");
+    res.sendFile(__dirname + "/public/index.html");
 });
+
+app.get("/server", function(req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+
+app.get("/client", function(req, res) {
+    res.sendFile(__dirname + "/public/client.html");
+});
+
+
 
 http.listen(3000, function() {
     console.log("Listening on port 3000");
 });
+
