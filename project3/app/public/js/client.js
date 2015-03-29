@@ -3,9 +3,27 @@ var socket = io();
 
 function addClickListener(elem) {
 	var tm;
+    var delayMode = document.getElementById("delay-mode");
+    var paintForever = document.getElementById("paint-forever");
+    var paint_size = document.getElementById("paint-size");
 	elem.addEventListener("mousedown", function() {
 		tm = window.setInterval(function() {
+		    if (delayMode.checked) {
+			window.setTimeout(function() {
+			    socket.emit("robot", elem.id);
+			    if (paintForever.checked) {
+				socket.emit("paint", paint_size.value);
+			    }
+			}, 2000);
+		    }
+		    else {
+
 			socket.emit("robot", elem.id);
+			if (paintForever.checked) {
+			    socket.emit("paint", paint_size.value);
+			}
+		    }
+
 		}, 10);
 
 	});
@@ -50,10 +68,29 @@ function initListeners() {
     addClickListener(J0CCW);
 
     var paint = document.getElementById("paint-button");
+    var delayMode = document.getElementById("delay-mode");
+    
+    
+    delayMode.addEventListener("click", function() {
+	var delayInfo = document.getElementById("delay-info");
+	if (delayMode.checked) {
+	    delayInfo.innerHTML = "Delay mode is active! Commands will be delayed over 2 seconds";
+	}
+	else {
+	    delayInfo.innerHTML = "";
+	}
+    });
 
     //need a special arg for paint
     paint.addEventListener("click", function() {
-    	socket.emit("paint", paint_size.value);
+	if (delayMode.checked) {
+	    window.setTimeout(function() {
+    		socket.emit("paint", paint_size.value);
+	    }, 2000);	    
+	}
+	else {
+    	    socket.emit("paint", paint_size.value);
+	}
     });
 
 }
