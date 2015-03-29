@@ -104,10 +104,7 @@ function initListeners() {
         }
     });
 
-	var bunny = document.getElementById("bunny-button");
-    bunny.addEventListener("click", function() {
-        drawbunny();
-    })
+
 
 }
 
