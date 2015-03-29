@@ -5,7 +5,9 @@ var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
 // Server stores current position
-var current_position = [
+var current_position = {
+    paint: [],
+    position: [
     {
 	x: 400,
 	y: 250
@@ -17,8 +19,8 @@ var current_position = [
     {
 	x: 400,
 	y: 75
-    }
-];
+    }]
+};
 
 io.on("connection", function(socket) {
 	console.log("A user connected");
