@@ -70,3 +70,8 @@ hr {
 .joint-two {
     color:rgb(205,85,85);
 }
+
+#delay-info {
+    font-size:2em;
+    color:red;
+}
