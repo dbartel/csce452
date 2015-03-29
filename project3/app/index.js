@@ -4,8 +4,25 @@ var http = require("http").Server(app);
 
 var io = require("socket.io")(http);
 
+// Server stores current position
+var current_position = [
+    {
+	x: 400,
+	y: 250
+    },
+    {
+	x: 400,
+	y: 150
+    },
+    {
+	x: 400,
+	y: 75
+    }
+];
+
 io.on("connection", function(socket) {
 	console.log("A user connected");
+	io.emit("init_position", current_position);
 	socket.on("robot", function(msg) {
 		console.log("Robot command received: " + msg);
 		io.emit('robot', msg);
@@ -15,6 +32,10 @@ io.on("connection", function(socket) {
 		console.log("Paint command received");
 		io.emit("paint", msg);
 	});
+    
+    socket.on("position", function(msg) {
+	current_position = msg;
+    });
 
 });
 
