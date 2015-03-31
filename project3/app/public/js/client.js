@@ -1,4 +1,18 @@
 var socket = io();
+socket.on("init_position", function(msg) {
+
+    x0 = msg.position[0].x;
+    y0 = msg.position[0].y;
+    x1 = msg.position[1].x;
+    y1 = msg.position[1].y;
+    x2 = msg.position[2].x;
+    y2 = msg.position[2].y;
+    PaintArray = msg.paint;
+    redraw();
+
+
+});
+
 
 
 var _ROTATE_FUNCTIONS = {
@@ -36,8 +50,27 @@ function addClickListener(elem) {
 			socket.emit("robot", elem.id);
 			if (paintForever.checked) {
 			    socket.emit("paint", paint_size.value);
+                addPaint(paint_size.value);
 			}
 		    }
+
+            var current_position = {
+            paint: PaintArray,
+            position: [{
+                x: x0,
+                y: y0
+            },
+            {
+                x: x1,
+                y: y1
+            },
+            {
+                x: x2,
+                y: y2
+            }]
+            };
+            socket.emit("position", current_position);
+
 
 		}, 10);
 
@@ -106,6 +139,32 @@ function initListeners() {
 	else {
     	    socket.emit("paint", paint_size.value);
 	}
+    addPaint(paint_size.value);
+    });
+
+    var reset = document.getElementById("reset-btn");
+
+    reset.addEventListener("click", function() {
+        socket.emit("reset", 1);
+        BASE_X = 400;
+        BASE_Y = 400;
+
+        x0 = 400;
+        y0 = 250;
+        Th0 = 90;
+
+        x1 = 400;
+        y1 = 150;
+        Th1 = 90;
+
+        x2 = 400;
+        y2 = 75;
+        Th2 = 90;
+
+        Thk0 = 90;
+        Thk1 = 0;
+        Thk2 = 0; 
+        redraw();
     });
 
 }

@@ -16,7 +16,7 @@ socket.on("robot", function(msg) {
 	    x: x2,
 	    y: y2
 	}]
-    }
+    };
     
 
     socket.emit("position", current_position);
@@ -37,4 +37,7 @@ socket.on("init_position", function(msg) {
     y2 = msg.position[2].y;
     PaintArray = msg.paint;
     redraw();
+
+
+
 });
