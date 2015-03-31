@@ -1,6 +1,20 @@
 var socket = io();
 
 
+var _ROTATE_FUNCTIONS = {
+    J0CW: jointZeroCW,
+    J0CCW: jointZeroCCW,
+    J1CW: jointOneCW,
+    J1CCW: jointOneCCW,
+    J2CW: jointTwoCW,
+    J2CCW: jointTwoCCW,
+    J2PX: jointTwoPX,
+    J2MX: jointTwoMX,
+    J2PY: jointTwoPY,
+    J2MY: jointTwoMY
+};
+
+
 function addClickListener(elem) {
 	var tm;
     var delayMode = document.getElementById("delay-mode");
@@ -8,6 +22,7 @@ function addClickListener(elem) {
     var paint_size = document.getElementById("paint-size");
 	elem.addEventListener("mousedown", function() {
 		tm = window.setInterval(function() {
+		    _ROTATE_FUNCTIONS[elem.id]();
 		    if (delayMode.checked) {
 			window.setTimeout(function() {
 			    socket.emit("robot", elem.id);
