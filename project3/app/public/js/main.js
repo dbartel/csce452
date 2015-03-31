@@ -203,9 +203,9 @@ function calLines(){
 	var distance0 = dist(200,400,x0,y0);
 	var distance1 = dist(x0,y0,x1,y1);
 	var distance2 = dist(x1,y1,x2,y2);
-	text(String(distance0), 500,300);
-	text(String(distance1), 500,200);
-	text(String(distance2), 500,100);
+	text(String("j0 " + round(x0)+" " +round(y0)), 500,300);
+	text(String("j1 " + round(x1)+" " +round(y1)), 500,200);
+	text(String("j2 " + round(x2)+" " +round(y2)), 500,100);
 }
 
 
