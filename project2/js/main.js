@@ -238,7 +238,7 @@ function jointTwoPX() {
 	y1=y1;
 	x2=nX;
 	y2=nY;
-	nX-=75*cos(Th2);
+	nX+=75*cos(Th2);
 	nY+=75*sin(Th2);
 	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
@@ -271,7 +271,7 @@ function jointTwoMX() {
 	y1=y1;
 	x2=nX;
 	y2=nY;
-	nX-=75*cos(Th2);
+	nX+=75*cos(Th2);
 	nY+=75*sin(Th2);
 	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
@@ -304,7 +304,7 @@ function jointTwoPY() {
 	y1=y1-5;
 	x2=nX;
 	y2=nY;
-	nX-=75*cos(Th2);
+	nX+=75*cos(Th2);
 	nY+=75*sin(Th2);
 	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
@@ -337,7 +337,7 @@ function jointTwoMY() {
 	y1=y1+5;
 	x2=nX;
 	y2=nY;
-	nX-=75*cos(Th2);
+	nX+=75*cos(Th2);
 	nY+=75*sin(Th2);
 	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
