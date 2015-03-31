@@ -232,245 +232,131 @@ function addPaint(size) {
 // x/y functions
 //i'm going to use these buttons
 function jointTwoPX() {
-	/*x1 += 1;
-	y1 = -1 * (sqrt(10000 - sq(x1 - x0)) - y0);
-	x2 += 1;
-	y2 = -1 * (sqrt(5625 - sq(x2 - x1)) - y1);
-	//get (x,y) position
-	var phi;
-	var dis;
-	dis = dist(BASE_X,BASE_Y,x2,y2);
-	console.log("dis " + dis);
-	phi = acos((x2-BASE_X)/dis);
-	console.log("x y pos " + x2 + " " + y2);
-	console.log("Th0 " + Th0);
-	console.log("Th1 " + Th1);
-	console.log("Th2 " + Th2);*/
-	var nX = round(x2+1);
-	var nY = round(y2);
-	if(dist(nX,nY,BASE_X,BASE_Y)>325)
+	var nX = x2+5;
+	var nY = y2;
+	x1=x1+5;
+	y1=y1;
+	x2=nX;
+	y2=nY;
+	nX-=75*cos(Th2);
+	nY+=75*sin(Th2);
+	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
-		//you done goofed
-		console.log("fook");
+		console.log("oops")
+		x1-=5;
+		x2-=5;
 	}
 	else
 	{
-		if(Th1>90)
-		{	
-			Th1+=.2
-			Th2+=.1;
-		}
-		else
-		{
-			Th1+=.2;
-			Th2-=.1;
-		}
-		/*if(round(Th1)==round(Th0))
-		{
-			if(Th2<90)
-				Th2+=.5;
-			else
-				Th2-=.5;
-			Th0-=.2;
-			Th1+=.4;
-		}*/
+		var nDist=dist(nX,nY,BASE_X,BASE_Y);
+		var Thb = acos((pow(150,2)-pow(100,2)+pow(nDist,2))/(2*150*nDist));
+		var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
+		Th0=ThC+Thb;
 		x0=BASE_X-150*cos(Th0);
 		y0=BASE_Y-150*sin(Th0);
-		x1=x0-100*cos(Th1);
-		y1=y0-100*sin(Th1);
-		x2=x1-75*cos(Th2);
-		y2=y1-75*sin(Th2);
+		if(round(dist(x0,y0,x1,y1))!=100)
+		{
+			Th0=180-Thb-ThC;
+			x0=BASE_X-150*cos(Th0);
+			y0=BASE_Y-150*sin(Th0);
+		}
 	}
-	/*else
-	{
-		while(nX!=round(x2))
-		{
-			if(Th2>90)
-			{
-				Th2-=1;
-				x2=x1-75*cos(Th2);
-				y2=y1-75*sin(Th2);
-			}
-			else
-			{
-				Th2+=1;
-				x2=x1-75*cos(Th2);
-				y2=y1-75*sin(Th2);
-			}
-			console.log("here");
-			if((Th2==0||Th2==180)&&nX!=round(x2))
-			{
-				if(Th1>90)
-				{
-					Th1-=1;
-					x1=x0-100*cos(Th1);
-					y1=y0-100*sin(Th1);
-					x2=x1-75*cos(Th2);
-					y2=y1-75*sin(Th2);
-				}
-				else
-				{
-					Th1+=1;
-					x1=x0-100*cos(Th1);
-					y1=y0-100*sin(Th1);
-					x2=x1-75*cos(Th2);
-					y2=y1-75*sin(Th2);
-				}
-				if((Th1==0||Th1==180)&&nX!=round(x2))
-				{
-					if(Th0>90)
-					{
-						Th0-=1;
-						x0=BASE_X-150*cos(Th0);
-						y0=BASE_Y-150*sin(Th0);
-						x1=x0-100*cos(Th1);
-						y1=y0-100*sin(Th1);
-						x2=x1-75*cos(Th2);
-						y2=y1-75*sin(Th2);
-					}
-					else
-					{
-						Th0+=1;
-						x0=BASE_X-150*cos(Th0);
-						y0=BASE_Y-150*sin(Th0);
-						x1=x0-100*cos(Th1);
-						y1=y0-100*sin(Th1);
-						x2=x1-75*cos(Th2);
-						y2=y1-75*sin(Th2);
-					}
-				}
-			}
-		}
-		var cas;
-		if(Th0!=0&&Th0!=180)
-			cas = 1;
-		else if(Th1!=0&&Th2!=180)
-			cas = 2;
-		else
-			cas = 3;
-		console.log("done with first");
-		while(nX!=round(x2)&&nY!=round(y2))
-		{
-			if(cas==1)
-			{
-				while(round(acos((nX-400-x2*cos(Th2))/150-2*cos(Th1)/3))!=round(180+asin(2*sin(Th1)/3-(nY-y2*cos(Th2)))))
-				{
-					if(Th1==180)
-						Th1=0;
-					else
-						Th1+=1;
-						
-					console.log("in loop");
-				}
-				Th0=round(acos((nX-400-x2*cos(Th2))/150-2*cos(Th1)/3));
-			}
-			else if (cas == 2)
-			{
-				console.log("rip");
-			}
-			else
-			{
-				console.log("rip");
-			}
-		}
-	}*/
 	redraw();
 }
 function jointTwoMX() {
-
-	if(Th1>90)
-	{	
-		Th1-=.2
-		Th2-=.1;
+	var nX = x2-5;
+	var nY = y2;
+	x1=x1-5;
+	y1=y1;
+	x2=nX;
+	y2=nY;
+	nX-=75*cos(Th2);
+	nY+=75*sin(Th2);
+	if(dist(nX,nY,BASE_X,BASE_Y)>250)
+	{
+		console.log("oops")
+		x1+=5;
+		x2+=5;
 	}
 	else
 	{
-		Th1-=.2;
-		Th2+=.1;
+		var nDist=dist(nX,nY,BASE_X,BASE_Y);
+		var Thb = acos((pow(150,2)-pow(100,2)+pow(nDist,2))/(2*150*nDist));
+		var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
+		Th0=ThC+Thb;
+		x0=BASE_X-150*cos(Th0);
+		y0=BASE_Y-150*sin(Th0);
+		if(round(dist(x0,y0,x1,y1))!=100)
+		{
+			Th0=180-Thb-ThC;
+			x0=BASE_X-150*cos(Th0);
+			y0=BASE_Y-150*sin(Th0);
+		}
 	}
-	/*if(round(Th1)==round(Th0))
-	{
-		if(Th2<90)
-			Th2-=.5;
-		else
-			Th2+=.5;
-		Th0+=.2;
-		Th1-=.4;
-	}*/
-	x0=BASE_X-150*cos(Th0);
-	y0=BASE_Y-150*sin(Th0);
-	x1=x0-100*cos(Th1);
-	y1=y0-100*sin(Th1);
-	x2=x1-75*cos(Th2);
-	y2=y1-75*sin(Th2);
 	redraw();
 }
 function jointTwoPY() {
-	var nX = round(x2);
-	var nY = round(y2+1);
-	if(dist(nX,nY,BASE_X,BASE_Y)>325)
+	var nX = x2;
+	var nY = y2-5;
+	x1=x1;
+	y1=y1-5;
+	x2=nX;
+	y2=nY;
+	nX-=75*cos(Th2);
+	nY+=75*sin(Th2);
+	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
-		//you done goofed
-		console.log("fook");
+		console.log("oops")
+		y1+=5;
+		y2+=5;
 	}
 	else
 	{
-		if(Th2>Th1)
-		{
-			Th1+=.1;
-			Th2-=.2;
-		}
-		else
-		{
-			Th1-=.1;
-			Th2+=.2;
-		}
-		/*if(round(Th1)==round(Th0))
-		{
-			if(Th2<90)
-				Th2-=.5;
-			else
-				Th2+=.5;
-			Th0+=.2;
-			Th1-=.4;
-		}*/
+		var nDist=dist(nX,nY,BASE_X,BASE_Y);
+		var Thb = acos((pow(150,2)-pow(100,2)+pow(nDist,2))/(2*150*nDist));
+		var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
+		Th0=ThC+Thb;
 		x0=BASE_X-150*cos(Th0);
 		y0=BASE_Y-150*sin(Th0);
-		x1=x0-100*cos(Th1);
-		y1=y0-100*sin(Th1);
-		x2=x1-75*cos(Th2);
-		y2=y1-75*sin(Th2);
+		if(round(dist(x0,y0,x1,y1))!=100)
+		{
+			Th0=180-Thb-ThC;
+			x0=BASE_X-150*cos(Th0);
+			y0=BASE_Y-150*sin(Th0);
+		}
 	}
 	redraw();
 }
 function jointTwoMY() {
-	
-	if(Th2>Th1)
+	var nX = x2;
+	var nY = y2+5;
+	x1=x1;
+	y1=y1+5;
+	x2=nX;
+	y2=nY;
+	nX-=75*cos(Th2);
+	nY+=75*sin(Th2);
+	if(dist(nX,nY,BASE_X,BASE_Y)>250)
 	{
-		Th1-=.1;
-		Th2+=.2;
+		console.log("oops")
+		y1-=5;
+		y2-=5;
 	}
 	else
 	{
-		Th1+=.1;
-		Th2-=.2;
+		var nDist=dist(nX,nY,BASE_X,BASE_Y);
+		var Thb = acos((pow(150,2)-pow(100,2)+pow(nDist,2))/(2*150*nDist));
+		var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
+		Th0=ThC+Thb;
+		x0=BASE_X-150*cos(Th0);
+		y0=BASE_Y-150*sin(Th0);
+		if(round(dist(x0,y0,x1,y1))!=100)
+		{
+			Th0=180-Thb-ThC;
+			x0=BASE_X-150*cos(Th0);
+			y0=BASE_Y-150*sin(Th0);
+		}
 	}
-	/*if(round(Th1)==round(Th0))
-	{
-		if(Th2<90)
-			Th2-=.5;
-		else
-			Th2+=.5;
-		Th0+=.2;
-		Th1-=.4;
-	}*/
-	x0=BASE_X-150*cos(Th0);
-	y0=BASE_Y-150*sin(Th0);
-	x1=x0-100*cos(Th1);
-	y1=y0-100*sin(Th1);
-	x2=x1-75*cos(Th2);
-	y2=y1-75*sin(Th2);
-	
 	redraw();
 }
 //not using these
