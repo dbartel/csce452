@@ -261,6 +261,7 @@ function jointTwoPX() {
 			y0=BASE_Y-150*sin(Th0);
 		}
 	}
+	Th1=acos((x1-x0)/-100);
 	redraw();
 }
 function jointTwoMX() {
@@ -293,6 +294,7 @@ function jointTwoMX() {
 			y0=BASE_Y-150*sin(Th0);
 		}
 	}
+	Th1=acos((x1-x0)/-100);
 	redraw();
 }
 function jointTwoPY() {
@@ -325,6 +327,7 @@ function jointTwoPY() {
 			y0=BASE_Y-150*sin(Th0);
 		}
 	}
+	Th1=acos((x1-x0)/-100);
 	redraw();
 }
 function jointTwoMY() {
@@ -357,6 +360,7 @@ function jointTwoMY() {
 			y0=BASE_Y-150*sin(Th0);
 		}
 	}
+	Th1=acos((x1-x0)/-100);
 	redraw();
 }
 //not using these
