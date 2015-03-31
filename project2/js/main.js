@@ -268,6 +268,40 @@ function jointTwoMX() {
 	
 	var l = dist(BASE_X,BASE_Y,nX,nY);
 	if(l>250)
+	{
+		console.log("l "+l);
+	}
+	else
+	{
+		var ThB = acos((pow(150,2)-pow(100,2)+pow(l,2))/(2*150*l));
+		var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
+		console.log("ThC " + ThC);
+		Th0 = 180-ThC-ThB;
+		Th1= acos((nX-BASE_X-150*cos(Th0))/100);
+	}
+	x0=BASE_X-150*cos(Th0);
+	y0=BASE_Y-150*sin(Th0);
+	x1=x0-100*cos(Th1);
+	y1=y0-100*sin(Th1);
+	x2=x1-75*cos(Th2);
+	y2=y1-75*sin(Th2);
+	redraw();
+}
+function jointTwoPY() {
+	var nX = x1;
+	var nY = y1-2;
+	var Th0h=Th0;
+	var Th1h=Th1;
+	var Th2h=Th2;
+	
+	var l = dist(BASE_X,BASE_Y,nX,nY);
+	if(round(l)==250)
+	{
+		nX=round(nX);
+		ny=round(nY);
+		l = dist(BASE_X,BASE_Y,nX,nY);
+	}
+	if(l>250)
 		console.log("oops");
 	else
 	{
@@ -276,7 +310,7 @@ function jointTwoMX() {
 	
 		Th0 = 180-ThC-ThB;
 		Th1= acos((nX-BASE_X-150*cos(Th0))/100);
-	
+		
 		x0=BASE_X-150*cos(Th0);
 		y0=BASE_Y-150*sin(Th0);
 		x1=x0-100*cos(Th1);
@@ -286,42 +320,26 @@ function jointTwoMX() {
 	}
 	redraw();
 }
-function jointTwoPY() {
-	var nX = x1;
-	var nY = y1-5;
-	var Th0h=Th0;
-	var Th1h=Th1;
-	var Th2h=Th2;
-	
-	var l = dist(BASE_X,BASE_Y,nX,nY);
-	var ThB = acos((pow(150,2)-pow(100,2)+pow(l,2))/(2*150*l));
-	var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
-	
-	Th0 = 180-ThC-ThB;
-	Th1= acos((nX-BASE_X-150*cos(Th0))/100);
-	
-	x0=BASE_X-150*cos(Th0);
-	y0=BASE_Y-150*sin(Th0);
-	x1=x0-100*cos(Th1);
-	y1=y0-100*sin(Th1);
-	x2=x1-75*cos(Th2);
-	y2=y1-75*sin(Th2);
-	redraw();
-}
 function jointTwoMY() {
 	
 	var nX = x1;
-	var nY = y1+5;
+	var nY = y1+2;
 	var Th0h=Th0;
 	var Th1h=Th1;
 	var Th2h=Th2;
 	
 	var l = dist(BASE_X,BASE_Y,nX,nY);
 	var ThB = acos((pow(150,2)-pow(100,2)+pow(l,2))/(2*150*l));
-	var ThC = atan(dist(0,nY,0,BASE_Y)/dist(nX,0,BASE_X,0));
-	
+	var ThC = 180-asin(dist(0,nY,0,BASE_Y)/l);
+	console.log("nX " + nX);
+	console.log("nY " + nY);
+	console.log("l " + l);
+	console.log("ThB " + ThB);
+	console.log("ThC " + ThC);
 	Th0 = 180-ThC-ThB;
+	console.log("Th0 " + Th0);
 	Th1= acos((nX-BASE_X-150*cos(Th0))/100);
+	console.log("Th1 " + Th1);
 	
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
