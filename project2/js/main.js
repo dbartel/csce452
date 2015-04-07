@@ -71,52 +71,28 @@ function draw() {
 	}
 
 function jointZeroCW(){
-	/*Th0+=1;
+	if(Th0!=180 && Th1>Th0-175 )
+		Th0+=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
-	legX = dist(BASE_X,0,x1,0);
-	if(x1>BASE_X)
-		legX*=-1;
-	legY = dist(0,BASE_Y,0,y1);
-	leg = dist(BASE_X,BASE_Y,x1,y1);
-	ThH = acos(legX/leg);
-	ThH+=1;
+	legX = dist(x0,0,x1,0);
+	legY = dist(0,y0,0,y1);
+	leg = dist(x0,y0,x1,y1);
+	ThH = acos(legX,leg);
+	ThH += 1;
 	x1=BASE_X-leg*cos(ThH);
 	y1=BASE_Y-leg*sin(ThH);
-	leg = dist(BASE_X,BASE_Y,x2,y2);
-	x2=BASE_X-leg*cos(ThH);
-	y2=BASE_Y-leg*sin(ThH);*/
-	Th0+=1;
-	Th1+=1;
-	Th2+=1;
-	x0=BASE_X-150*cos(Th0);
-	y0=BASE_Y-150*sin(Th0);
-	x1=x0-100*cos(Th1);
+	/*x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
-	y2=y1-75*sin(Th2);
+	y2=y1-75*sin(Th2);*/
+	
 	redraw();
 }
 
 function jointZeroCCW(){
-	/*Th0-=1;
-	x0=BASE_X-150*cos(Th0);
-	y0=BASE_Y-150*sin(Th0);
-	legX = dist(BASE_X,0,x1,0);
-	if(x1>BASE_X)
-		legX*=-1;
-	legY = dist(0,BASE_Y,0,y1);
-	leg = dist(BASE_X,BASE_Y,x1,y1);
-	ThH = acos(legX/leg);
-	ThH-=1;
-	x1=BASE_X-leg*cos(ThH);
-	y1=BASE_Y-leg*sin(ThH);
-	leg = dist(BASE_X,BASE_Y,x2,y2);
-	x2=BASE_X-leg*cos(ThH);
-	y2=BASE_Y-leg*sin(ThH);*/
-	Th0-=1;
-	Th1-=1;
-	Th2-=1;
+	if(Th0!=0 && Th1<Th0+175 )
+		Th0-=1;
 	x0=BASE_X-150*cos(Th0);
 	y0=BASE_Y-150*sin(Th0);
 	x1=x0-100*cos(Th1);
@@ -127,8 +103,8 @@ function jointZeroCCW(){
 }
 
 function jointOneCW(){
-	Th1+=1;
-	Th2+=1;
+	if((Th1<Th0+175) && Th2>Th1-175 )
+		Th1+=1
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
@@ -138,8 +114,8 @@ function jointOneCW(){
 }
 
 function jointOneCCW(){
-	Th1-=1;
-	Th2-=1;
+	if(Th1>Th0-175 && (Th2<Th1+175))
+		Th1-=1;
 	x1=x0-100*cos(Th1);
 	y1=y0-100*sin(Th1);
 	x2=x1-75*cos(Th2);
@@ -148,14 +124,16 @@ function jointOneCCW(){
 }
 
 function jointTwoCW(){
-	Th2+=1;
+	if((Th2<Th1+175))
+		Th2+=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
 	redraw();
 }
 
 function jointTwoCCW(){
-	Th2-=1;
+	if(Th2>Th1-175)	
+		Th2-=1;
 	x2=x1-75*cos(Th2);
 	y2=y1-75*sin(Th2);
 	redraw();
@@ -163,7 +141,7 @@ function jointTwoCCW(){
 
 function onLine(xp1,yp1,xp2,yp2,xc,yc){
 	var m = (yp2-yp1)/(xp2-xp1);
-	 if( ((m * xc) - (m * xp1) + yp1) == yc)
+	if ( ((m * xc) - (m * xp1) + yp1) == yc)
 		return true;
 	else
 		return false;
