@@ -1,23 +1,18 @@
 <!doctype html>
 <html>
     <head>
-        <title>Project 2</title>
+        <title>Project 3</title>
         <link href="home.css" rel='stylesheet'>
         <script type="text/javascript" src="lib/p5.js"></script>
+        <script type="text/javascript" src="lib/socket.io.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/buttons.js"></script>
+        <script type="text/javascript" src="js/network.js"></script>
     </head>
     <body>
         <div class="content">
-            <div class="header">
-                <h1>Project 2: PaintBot</h1>
-                <hr>
-                <a href="https://github.com/dbartel/csce452/tree/gh-pages/project2">View Source</a> <br>
-                <a href="report/Report.pdf">Report</a> <br>
-                <a href="tasks.html">Task Allocation</a>
-            </div>
-            <hr>
-            <div class='controls'>
+	  <h1>Slave</h1>
+<!--            <div class='controls'>
                 <strong>Joint Mode Control</strong>
                 <table>
                     <tr>
@@ -58,7 +53,7 @@
                   <option value="30">30</option>
                 </select>                            
                         </td>
-                        <td><button class="btn" id="bunny-button">Paint FN</button></td>
+                        <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>  
                 </table>
@@ -71,7 +66,7 @@
                         <td><button class="btn" id="J2PY">+Y</button></td>
                         <td><button class="btn" id="J2MY">-Y</button></td>
                     </tr>
-                 <!--   <tr>
+                    <tr>
                         <td><strong>Joint 1</strong></td>
                         <td><button class="btn" id="J1PX">+X</button></td>
                         <td><button class="btn" id="J1MX">-X</button></td>
@@ -84,9 +79,9 @@
                         <td><button class="btn" id="J0MX">-X</button></td>
                         <td><button class="btn" id="J0PY">+Y</button></td>
                         <td><button class="btn" id="J0MY">-Y</button></td>
-                    </tr> -->
+                    </tr>
                 </table>
-            </div>
+            </div> -->
 
         </div>
         

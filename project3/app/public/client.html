@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+
+          <script type='text/javascript' src="lib/socket.io.js"></script>
+	  <script type="text/javascript" src="lib/p5.js"></script>
+	  <script type="text/javascript" src="js/main.js"></script>
+          <script type="text/javascript" src="js/client.js"></script>
+	  <link href="home.css" rel="stylesheet">
+	</head>
+	<body>
+        <button class="btn" id='reset-btn'>Click here to reset everything</button>
+            <div>
+	      <h1>Master Controls</h1>
+                <strong>Joint Mode Control</strong>
+                <table>
+                    <tr>
+                        <td><strong class="joint-two">Joint 2</strong>
+                        </td>
+                        <td><button class="btn" id="J2CW">Clockwise</button>
+                        </td>
+                        <td><button class="btn" id="J2CCW">CCW</button>
+                        </td>  
+                    </tr>    
+                    <tr>
+                        <td><strong class="joint-one">Joint 1</strong>
+                        </td>
+                        <td><button class="btn" id="J1CW" > Clockwise</button>
+                        </td>
+                        <td><button class="btn" id="J1CCW" >CCW</button>
+                        </td>  
+                    </tr>    
+                    <tr>
+                        <td><strong class="joint-zero">Joint 0</strong>
+                        </td>
+                        <td><button class="btn" id="J0CW" >Clockwise</button>
+                        </td>
+                        <td><button class="btn" id="J0CCW" >CCW</button>
+                        </td>  
+                    </tr>  
+                    <tr>
+                        <td><strong>Paint</strong>
+                        </td>
+                        <td><button class="btn" id="paint-button">Paint</button></td>
+                        <td>
+			  <label><strong>Paint Size</strong></label>
+			  <select id="paint-size">
+			    <option value="10">10</option>
+			    <option value="15">15</option>
+			    <option value="20" selected>20</option>
+			    <option value="25">25</option>
+			    <option value="30">30</option>
+			  </select>
+			</td>
+		    </tr>
+                </table>
+                <strong>World Mode Control</strong>
+                <table>
+                    <tr>
+                        <td><strong>Joint 2</strong></td>
+                        <td><button class="btn" id="J2PX">+X</button></td>
+                        <td><button class="btn" id="J2MX">-X</button></td>
+                        <td><button class="btn" id="J2PY">+Y</button></td>
+                        <td><button class="btn" id="J2MY">-Y</button></td>
+                    </tr>
+                </table>
+                <input type="checkbox" id="paint-forever"></input>Paint Forever
+		<input type="checkbox" id="delay-mode"> Delay Mode
+		<div id="delay-info"></div>
+	    </div>
+	</body>
+</html>
