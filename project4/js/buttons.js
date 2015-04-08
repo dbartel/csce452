@@ -25,6 +25,11 @@ function initListeners() {
         createLight();
         listLights();
     });
+	
+		
+	addVehicle.addEventListener("click", function() {
+        createVehicle();
+    })
 }
 
 
