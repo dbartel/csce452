@@ -48,13 +48,18 @@ function draw() {
 	//calLines();
 }
 
+function generateId() {
+	return Math.random().toString(36).substring(7);
+}
+
 function createLight() {
 	var posX = window.prompt("Enter x position", 0);
 	var posY = window.prompt("Enter y position", 0);
 	LIGHT_SOURCES.push({
 		x: posX,
 		y: posY,
-		listed:false
+		listed:false,
+		id: generateId()
 	});
 	redraw();
 	//add light to LIGHT_SOURCES array
@@ -74,7 +79,8 @@ function createVehicle() {
 		x4: posX,
 		y4: Number(posY) -75,
 		matrix: kmatrix,
-		listed:false
+		listed:false,
+		id: generateId()
 	});
 	redraw();
 }
