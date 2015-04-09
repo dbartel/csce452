@@ -20,6 +20,7 @@ function listVehicles() {
 function initListeners() {
     var addVehicle = document.getElementById("add-vehicle");
     var addLight = document.getElementById("add-light");
+	var start = document.getElementById("start");
 
     addLight.addEventListener("click", function() {
         createLight();
@@ -29,6 +30,10 @@ function initListeners() {
 		
 	addVehicle.addEventListener("click", function() {
         createVehicle();
+    })
+	
+	start.addEventListener("click", function() {
+        startSim();
     })
 }
 
