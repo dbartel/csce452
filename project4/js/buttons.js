@@ -1,19 +1,42 @@
-function listLights() {
-    var lightList = document.getElementById("light-list");
-    for (var i = 0; i < LIGHT_SOURCES.length; i++) {
-        if (!LIGHT_SOURCES[i].listed) {
-            var dv = document.createElement("div");
-            dv.innerHTML = "(" + LIGHT_SOURCES[i].x + "," + LIGHT_SOURCES[i].y + ")";
 
-            lightList.appendChild(dv);
-            LIGHT_SOURCES[i].listed = true;
+//Generic display element to vehicle/light lists
+function listElements(parentId, arr) {
+    var parent = document.getElementById(parentId);
+    for (var i = 0; i < window[arr].length; i++) {
+        if (!window[arr][i].listed) {
+            var dv = document.createElement("div");
+
+            if (arr == "VEHICLES") dv.innerHTML = "v" + i;
+            else dv.innerHTML = "(" + window[arr][i].x + "," + window[arr][i].y + ")";
+
+            dv.id = window[arr][i].id;
+            dv.class = "list-item";
+            dv.addEventListener("click", function() {
+                removeElement(dv.id, parentId, arr);
+            });
+
+            parent.appendChild(dv);
+            window[arr][i].listed = true;
 
         }
     }
 }
 
-function listVehicles() {
+//Generic remove element fn for vehicles and lights
+function removeElement(childId, parentId, arr) {
+    if (window.confirm("Remove?")) {
+        var parentElem = document.getElementById(parentId);
+        var childElem = document.getElementById(childId);
+        parentElem.removeChild(childElem);
 
+        for (var i = 0; i < window[arr].length; i++) {
+            if (window[arr][i].id == childId) {
+                window[arr].splice(i, 1);
+                redraw();
+                break;
+            }
+        }
+    }
 }
 
 
@@ -24,13 +47,14 @@ function initListeners() {
 
     addLight.addEventListener("click", function() {
         createLight();
-        listLights();
+        listElements("light-list", "LIGHT_SOURCES");
     });
 	
 		
 	addVehicle.addEventListener("click", function() {
         createVehicle();
-    })
+        listElements("vehicle-list", "VEHICLES");
+    });
 	
 	start.addEventListener("click", function() {
         startSim();
