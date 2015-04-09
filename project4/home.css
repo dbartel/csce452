@@ -30,10 +30,10 @@ a:hover {
 
 .controls {
     border:1px solid #232323;
-    /*width:23%;*/
+    width:23%;
     position:fixed;
-    right:0;
-    top:50%;
+    right:10%;
+    /*top:50%;*/
     
 }
 
@@ -69,4 +69,8 @@ hr {
 
 .joint-two {
     color:rgb(205,85,85);
+}
+
+.item-list > div:hover {
+  cursor:pointer;
 }
