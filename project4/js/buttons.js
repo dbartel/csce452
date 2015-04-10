@@ -6,7 +6,11 @@ function listElements(parentId, arr) {
         if (!window[arr][i].listed) {
             var dv = document.createElement("div");
 
-            if (arr == "VEHICLES") dv.innerHTML = "v" + i;
+            if (arr == "VEHICLES") {
+                var ds = "<table><tr><td>v" + i + "</td><td>" + window[arr][i].matrix[0] + "</td><td>" + window[arr][i].matrix[1] +
+                "</td></tr><tr><td></td><td>" + window[arr][i].matrix[2] + "</td><td>" + window[arr][i].matrix[3] + "</td></tr></table>";
+                dv.innerHTML = ds;
+            }
             else dv.innerHTML = "(" + window[arr][i].x + "," + window[arr][i].y + ")";
 
             dv.id = window[arr][i].id;
