@@ -57,7 +57,7 @@ function initListeners() {
     });
 	
 	start.addEventListener("click", function() {
-        startSim();
+        toggleSim();
     })
 }
 

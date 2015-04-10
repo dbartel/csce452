@@ -5,7 +5,7 @@ var CANVAS_WIDTH = 800;
 
 var LIGHT_SOURCES = [];
 var VEHICLES = [];
-var ON = false;
+var SIM_ACTIVE = false;
 
 
 
@@ -17,7 +17,7 @@ function setup() {
 	angleMode(DEGREES);
     
 
-	noLoop();
+	// noLoop();
 }
 
 
@@ -27,7 +27,6 @@ function setup() {
 function draw() {
 	background(204);
 
-	//drawPaint();
 
 	//Draw Lights
 	//c = color(255, 204, 0);
@@ -42,6 +41,10 @@ function draw() {
 	
 	for (i =0; i< VEHICLES.length; i++){
 		quad(VEHICLES[i].x1, VEHICLES[i].y1, VEHICLES[i].x2, VEHICLES[i].y2 ,VEHICLES[i].x3, VEHICLES[i].y3,VEHICLES[i].x4, VEHICLES[i].y4);
+	}
+
+	if (SIM_ACTIVE) {
+		move();
 	}
 	
     //stroke(0,0,0);
@@ -61,7 +64,6 @@ function createLight() {
 		listed:false,
 		id: generateId()
 	});
-	redraw();
 	//add light to LIGHT_SOURCES array
 }
 
@@ -82,20 +84,11 @@ function createVehicle() {
 		listed:false,
 		id: generateId()
 	});
-	redraw();
 }
 
-function startSim(){
-	ON = true;
-	move();
-	//calculateSpeed(0);
-	
+function toggleSim(){
+	SIM_ACTIVE = !SIM_ACTIVE;
 }
-
-function stopSim(){
-	ON = false;
-}
-
 
 
 function move(){
@@ -146,7 +139,6 @@ function move(){
 		
 		
 	}
-	redraw();
 }
 
 
