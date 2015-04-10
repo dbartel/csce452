@@ -75,9 +75,9 @@ function createVehicle() {
 		x2: Number(posX) + 50,
 		y2: posY,
 		x3: Number(posX) + 50,
-		y3: Number(posY) -75,
+		y3: Number(posY) +75,
 		x4: posX,
-		y4: Number(posY) -75,
+		y4: Number(posY) +75,
 		matrix: kmatrix,
 		listed:false,
 		id: generateId()
@@ -88,6 +88,7 @@ function createVehicle() {
 function startSim(){
 	ON = true;
 	move();
+	//calculateSpeed(0);
 	
 }
 
@@ -98,9 +99,52 @@ function stopSim(){
 
 
 function move(){
-	for (i =0; i< VEHICLES.length; i++){
-		var speeds = calculateSpeed(i);
-		//This is where you would mess with the points!!
+	for (j = 0; j< VEHICLES.length; j++){
+		var speeds = calculateSpeed(j);
+		console.log(VEHICLES[j].x3);
+		console.log(VEHICLES[j].x4);
+		console.log(VEHICLES[j].y3);
+		console.log(VEHICLES[j].y4);
+		
+		
+		VEHICLES[j].x4 = Number(VEHICLES[j].x4) - speeds[0];
+		VEHICLES[j].y4 = Number(VEHICLES[j].y4) - speeds[0];
+		
+		VEHICLES[j].x3 = Number(VEHICLES[j].x3) - speeds[1];
+		VEHICLES[j].y3 = Number(VEHICLES[j].y3) - speeds[1];
+		
+		console.log(VEHICLES[j].x3);
+		console.log(VEHICLES[j].x4);
+		console.log(VEHICLES[j].y3);
+		console.log(VEHICLES[j].y4);
+		
+		//Calc angle
+		var angle = 90;
+		if (VEHICLES[j].y4 >= VEHICLES[j].y3){
+			//alert("I am here");
+			var diff = ( dist( Number(VEHICLES[j].x3), 0, Number(VEHICLES[j].x4), 0) ) / ( dist( Number(VEHICLES[j].x3), Number(VEHICLES[j].y3), Number(VEHICLES[j].x4), Number(VEHICLES[j].y4)) );
+			console.log(diff);
+			angle = 180 - 90 - acos(diff);
+		}
+		else{
+			var diff = ( dist( Number(VEHICLES[j].x3), 0, Number(VEHICLES[j].x4), 0) ) / ( dist( Number(VEHICLES[j].x3), Number(VEHICLES[j].y3), Number(VEHICLES[j].x4), Number(VEHICLES[j].y4)) );
+			console.log(diff);
+			angle = acos(diff);
+		}
+		
+		console.log(angle);
+		
+		//Figure out Point One and Two
+		VEHICLES[j].x2 = Number(VEHICLES[j].x3) - (75 * cos(angle));
+		VEHICLES[j].y2 = Number(VEHICLES[j].y3) -  75 * sin(angle);
+		
+		console.log(VEHICLES[j].x1 + "  " + VEHICLES[j].y1);
+		
+		
+		VEHICLES[j].x1 = Number(VEHICLES[j].x4) - (75 * cos(angle));
+		VEHICLES[j].y1 = Number(VEHICLES[j].y4) -  75 * sin(angle);
+		
+		
 	}
 	redraw();
 }
@@ -110,17 +154,26 @@ function calculateSpeed(index){
 	var s1 =0;
 	var s2 =0;
 	for (i =0; i< LIGHT_SOURCES.length; i++){
-		distanceS1 = dist(LIGHT_SOURCES[0].x,LIGHT_SOURCES[0].y, Number(VEHICLES[index].x) + 10 , Number(VEHICLES[index].y));
-		distanceS2 = dist(LIGHT_SOURCES[0].x,LIGHT_SOURCES[0].y, Number(VEHICLES[index].x) + 40 , Number(VEHICLES[index].y));
+		distanceS1 = dist(LIGHT_SOURCES[0].x,LIGHT_SOURCES[0].y, Number(VEHICLES[index].x1) + 10 , Number(VEHICLES[index].y1));
+		distanceS2 = dist(LIGHT_SOURCES[0].x,LIGHT_SOURCES[0].y, Number(VEHICLES[index].x1) + 40 , Number(VEHICLES[index].y1));
+		
+	//console.log(distanceS1);
+	//console.log(distanceS2);
+		
 		s1 = 100 / distanceS1;
 		s2 = 100 / distanceS2;
 	}
+	//console.log(s1);
+	//console.log(s2);
 	
 	var w1 = 0;
 	var w2 = 0;
-	
+
 	w1 = Number(VEHICLES[index].matrix.substring(0,1)) * s1 + Number(VEHICLES[index].matrix.substring(1,2)) * s2;
 	w2 = Number(VEHICLES[index].matrix.substring(2,3)) * s1 + Number(VEHICLES[index].matrix.substring(3,4)) * s2;
+	
+	//console.log(w1);
+	//console.log(w2);
 	
 	return [w1,w2];
 }
