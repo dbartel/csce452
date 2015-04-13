@@ -45,19 +45,23 @@ function draw() {
 		
 		quad(VEHICLES[i].x1, VEHICLES[i].y1, VEHICLES[i].x2, VEHICLES[i].y2 ,VEHICLES[i].x3, VEHICLES[i].y3,VEHICLES[i].x4, VEHICLES[i].y4);
 		
+		fill(255);
+		arc(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 15, 20, 20, 0 + Number(VEHICLES[i].rotation), 180 - Number(VEHICLES[i].rotation));
+		arc(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 15, 20, 20, 0, 180 + Number(VEHICLES[i].rotation));
+		
 		/*rotate(VEHICLES[i].angle);
 		fill(0);
 		ellipse(Number(VEHICLES[i].x4) - 6, Number(VEHICLES[i].y4) - 8, 15, 25);
 		ellipse(Number(VEHICLES[i].x3) + 6, Number(VEHICLES[i].y3) - 8, 15, 25);
-		
-		fill(255);
-		arc(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 15, 20, 20, 0, 180);
-		arc(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 15, 20, 20, 0, 180);
+			
+
 		
 		stroke(126);
 		line(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 6,Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1));
 		line(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 6,Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2));
 		*/
+		
+
 		
 	}
 
@@ -98,7 +102,7 @@ function createVehicle() {
 		y3: Number(posY) +75,
 		x4: posX,
 		y4: Number(posY) +75,
-		angle: 0,
+		rotation: 0,
 		matrix: kmatrix,
 		listed:false,
 		id: generateId()
@@ -134,28 +138,29 @@ function move(){
 		VEHICLES[j].y3 = Number(VEHICLES[j].y3) - sin(angle)*speeds[1];
 		
 		//Calc new angle
-		angle = 90;
+		angle2 = 90;
 		//Tilting to left
 		if (VEHICLES[j].y4 >= VEHICLES[j].y3){
 			diff = ( dist( Number(VEHICLES[j].x3), 0, Number(VEHICLES[j].x4), 0) ) / ( dist( Number(VEHICLES[j].x3), Number(VEHICLES[j].y3), Number(VEHICLES[j].x4), Number(VEHICLES[j].y4)) );
 			//console.log(diff);
-			angle = 180 - 90 - acos(diff);
+			angle2 = 180 - 90 - acos(diff);
 		}
 		else{ //Tilting to the right
 			diff = ( dist( Number(VEHICLES[j].x3), 0, Number(VEHICLES[j].x4), 0) ) / ( dist( Number(VEHICLES[j].x3), Number(VEHICLES[j].y3), Number(VEHICLES[j].x4), Number(VEHICLES[j].y4)) );
 			//console.log(diff);
-			angle = acos(diff) + 90;
+			angle2 = acos(diff) + 90;
 		}
 		
+		VEHICLES[j].rotation = angle2 - angle;
 		//Figure out Point One and Two
-		VEHICLES[j].x2 = Number(VEHICLES[j].x3) - (75 * cos(angle));
-		VEHICLES[j].y2 = Number(VEHICLES[j].y3) -  75 * sin(angle);
+		VEHICLES[j].x2 = Number(VEHICLES[j].x3) - (75 * cos(angle2));
+		VEHICLES[j].y2 = Number(VEHICLES[j].y3) -  75 * sin(angle2);
 		
 		//console.log(VEHICLES[j].x1 + "  " + VEHICLES[j].y1);
 		
 		
-		VEHICLES[j].x1 = Number(VEHICLES[j].x4) - (75 * cos(angle));
-		VEHICLES[j].y1 = Number(VEHICLES[j].y4) -  75 * sin(angle);
+		VEHICLES[j].x1 = Number(VEHICLES[j].x4) - (75 * cos(angle2));
+		VEHICLES[j].y1 = Number(VEHICLES[j].y4) -  75 * sin(angle2);
 		
 		
 	}
