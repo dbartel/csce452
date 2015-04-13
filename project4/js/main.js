@@ -31,7 +31,9 @@ function draw() {
 	//Draw Lights
 	//c = color(255, 204, 0);
 	fill(255, 204, 0);  
-	noStroke();  
+	noStroke();
+	
+	
 	
 	for (i =0; i< LIGHT_SOURCES.length; i++){
 		ellipse(LIGHT_SOURCES[i].x, LIGHT_SOURCES[i].y, 50, 50);
@@ -39,8 +41,24 @@ function draw() {
 	
 	fill(153); 
 	
-	for (i =0; i< VEHICLES.length; i++){
+	for (i =0; i< VEHICLES.length; i++){		
+		
 		quad(VEHICLES[i].x1, VEHICLES[i].y1, VEHICLES[i].x2, VEHICLES[i].y2 ,VEHICLES[i].x3, VEHICLES[i].y3,VEHICLES[i].x4, VEHICLES[i].y4);
+		
+		/*rotate(VEHICLES[i].angle);
+		fill(0);
+		ellipse(Number(VEHICLES[i].x4) - 6, Number(VEHICLES[i].y4) - 8, 15, 25);
+		ellipse(Number(VEHICLES[i].x3) + 6, Number(VEHICLES[i].y3) - 8, 15, 25);
+		
+		fill(255);
+		arc(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 15, 20, 20, 0, 180);
+		arc(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 15, 20, 20, 0, 180);
+		
+		stroke(126);
+		line(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 6,Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1));
+		line(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 6,Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2));
+		*/
+		
 	}
 
 	if (SIM_ACTIVE) {
@@ -80,6 +98,7 @@ function createVehicle() {
 		y3: Number(posY) +75,
 		x4: posX,
 		y4: Number(posY) +75,
+		angle: 0,
 		matrix: kmatrix,
 		listed:false,
 		id: generateId()
@@ -128,24 +147,6 @@ function move(){
 			angle = acos(diff) + 90;
 		}
 		
-		//console.log(angle);
-		
-		//If y4 and y3 is too far away
-		/*var th1 = acos(diff);
-		var diffCheck = dist(Number(VEHICLES[j].x3), Number(VEHICLES[j].y3), Number(VEHICLES[j].x4), Number(VEHICLES[j].y4));
-		if(round(diffCheck)!=50)
-		{
-			if(VEHICLES[j].y4 >= VEHICLES[j].y3)
-			{
-				VEHICLES[j].x3=VEHICLES[j].x4-50*cos(th2);
-				VEHICLES[j].y3=VEHICLES[j].y4-50*sin(th2);
-			}
-			else
-			{
-				VEHICLES[j].x4=VEHICLES[j].x3-50*cos(th2);
-				VEHICLES[j].y4=VEHICLES[j].y3-50*sin(th2);
-			}
-		}*/
 		//Figure out Point One and Two
 		VEHICLES[j].x2 = Number(VEHICLES[j].x3) - (75 * cos(angle));
 		VEHICLES[j].y2 = Number(VEHICLES[j].y3) -  75 * sin(angle);
