@@ -46,12 +46,12 @@ function draw() {
 		fill(255);
 		arc(Number(VEHICLES[i].x1), Number(VEHICLES[i].y1), 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
 		arc(Number(VEHICLES[i].x2), Number(VEHICLES[i].y2), 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
-		fill(153); 
+		
 		/*rotate(VEHICLES[i].angle);*/
 		fill(0);
 		ellipse(Number(VEHICLES[i].x4), Number(VEHICLES[i].y4), 20, 20);
 		ellipse(Number(VEHICLES[i].x3), Number(VEHICLES[i].y3), 20, 20);
-	
+		fill(153); 
 	}
 
 	if (SIM_ACTIVE) {
