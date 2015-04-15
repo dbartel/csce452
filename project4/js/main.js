@@ -42,18 +42,16 @@ function draw() {
 	fill(153); 
 	
 	for (i =0; i< VEHICLES.length; i++){		
-		
 		quad(VEHICLES[i].x1, VEHICLES[i].y1, VEHICLES[i].x2, VEHICLES[i].y2 ,VEHICLES[i].x3, VEHICLES[i].y3,VEHICLES[i].x4, VEHICLES[i].y4);
-		
 		fill(255);
-		arc(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) -5, 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
-		arc(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) -5, 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
-		
-		/*rotate(VEHICLES[i].angle);
+		arc(Number(VEHICLES[i].x1), Number(VEHICLES[i].y1), 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
+		arc(Number(VEHICLES[i].x2), Number(VEHICLES[i].y2), 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
+		fill(153); 
+		/*rotate(VEHICLES[i].angle);*/
 		fill(0);
-		ellipse(Number(VEHICLES[i].x4) - 6, Number(VEHICLES[i].y4) - 8, 15, 25);
-		ellipse(Number(VEHICLES[i].x3) + 6, Number(VEHICLES[i].y3) - 8, 15, 25);
-	*/
+		ellipse(Number(VEHICLES[i].x4), Number(VEHICLES[i].y4), 20, 20);
+		ellipse(Number(VEHICLES[i].x3), Number(VEHICLES[i].y3), 20, 20);
+	
 	}
 
 	if (SIM_ACTIVE) {
