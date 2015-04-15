@@ -46,23 +46,14 @@ function draw() {
 		quad(VEHICLES[i].x1, VEHICLES[i].y1, VEHICLES[i].x2, VEHICLES[i].y2 ,VEHICLES[i].x3, VEHICLES[i].y3,VEHICLES[i].x4, VEHICLES[i].y4);
 		
 		fill(255);
-		arc(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 15, 20, 20, 0 + Number(VEHICLES[i].rotation), 180 - Number(VEHICLES[i].rotation));
-		arc(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 15, 20, 20, 0, 180 + Number(VEHICLES[i].rotation));
+		arc(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) -5, 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
+		arc(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) -5, 20, 20, Number(VEHICLES[i].rotation) - 90, 90 + Number(VEHICLES[i].rotation));
 		
 		/*rotate(VEHICLES[i].angle);
 		fill(0);
 		ellipse(Number(VEHICLES[i].x4) - 6, Number(VEHICLES[i].y4) - 8, 15, 25);
 		ellipse(Number(VEHICLES[i].x3) + 6, Number(VEHICLES[i].y3) - 8, 15, 25);
-			
-
-		
-		stroke(126);
-		line(Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1) - 6,Number(VEHICLES[i].x1) + 10, Number(VEHICLES[i].y1));
-		line(Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2) - 6,Number(VEHICLES[i].x2) - 10, Number(VEHICLES[i].y2));
-		*/
-		
-
-		
+	*/
 	}
 
 	if (SIM_ACTIVE) {
@@ -102,7 +93,8 @@ function createVehicle() {
 		y3: Number(posY) +75,
 		x4: posX,
 		y4: Number(posY) +75,
-		rotation: 0,
+		rotation: 90,
+		speed: 0,
 		matrix: kmatrix,
 		listed:false,
 		id: generateId()
@@ -151,7 +143,7 @@ function move(){
 			angle2 = acos(diff) + 90;
 		}
 		
-		VEHICLES[j].rotation = angle2 - angle;
+		VEHICLES[j].rotation = angle2;
 		//Figure out Point One and Two
 		VEHICLES[j].x2 = Number(VEHICLES[j].x3) - (75 * cos(angle2));
 		VEHICLES[j].y2 = Number(VEHICLES[j].y3) -  75 * sin(angle2);
