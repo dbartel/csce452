@@ -1,0 +1,22 @@
+html,body {
+	font-family: monospace;
+	height:100%;
+}
+
+.content {
+	width: 75%;
+	margin: 0 auto;
+}
+
+.centered {
+	text-align: center;
+}
+
+ul {
+	list-style: square;
+}
+
+table {
+	margin:0 auto;
+
+}
