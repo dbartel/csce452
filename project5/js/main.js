@@ -88,12 +88,10 @@ function isOverlap(homeBlock, intrudingBlock) {
 }
 
 function drawCells() {
-
     for (var i = 0; i < CELLS.length; i++) {
 	line(CELLS[i].x1, CELLS[i].y1, CELLS[i].x2, CELLS[i].y2)
 	line(CELLS[i].x1 + CELLS[i].size, CELLS[i].y1, CELLS[i].x2 + CELLS[i].size, CELLS[i].y2)
     }
-
 }
 
 
@@ -128,19 +126,41 @@ function divideTop(divideBlock, otherBlock0, otherBlock1) {
     }
 }
 
-divideTop(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
-divideTop(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
-divideTop(BLOCKS[2], BLOCKS[0], BLOCKS[1]);
-//drawCells();
-console.log(CELLS);
 
 
 function divideBottom(divideBlock, otherBlock0, otherBlock1) {
-
+    
+    if (divideBlock.y == CANVAS_HEIGHT) {
+	return;
+    }
+    
     overlap0 = isOverlap(divideBlock, otherBlock0);
     overlap1 = isOverlap(divideBlock, otherBlock1);
+    if (! overlap0 && ! overlap1) {
+	// no bottom overlaps, push a new cell
+	var newCell = {
+	    x1: divideBlock.x,
+	    y1: divideBlock.x + divideBlock.size,
+	    x2: divideBlock.x,
+	    y2: CANVAS_WIDTH,
+	    size: divideBlock.size
+	};
+	CELLS.push(newCell);
+    }
 
 }
+
+
+divideTop(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
+divideTop(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
+divideTop(BLOCKS[2], BLOCKS[0], BLOCKS[1]);
+divideBottom(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
+divideBottom(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
+divideBottom(BLOCKS[2], BLOCKS[1], BLOCKS[2]);
+
+
+//drawCells();
+console.log(CELLS);
 
 
 // Divide region into cells
