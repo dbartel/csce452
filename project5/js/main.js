@@ -76,6 +76,38 @@ function drawPoints() {
 	fill(0);
 }
 
+
+// Divide region into cells
+function subDivide() {
+}
+
+
+// Build adjacency matrix from cells
+function findAdjacencies() {
+}
+
+
+//Use some sort of search algorithm to find a solution
+function searchGraph() {
+}
+
+// Render the solution to the canvas
+function drawSolution() {
+}
+
+
+function solve() {
+    
+    subDivide();
+    findAdjacencies();
+    searchGraph();
+    drawSolution();
+
+
+}
+
+
+
 //the button press will call this function with the arguments START_POINT.x,START_POINT.y
 //that function will also put START_POINT.x and START_POINT.y 
 function findPath(x,y)
