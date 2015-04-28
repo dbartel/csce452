@@ -15,7 +15,7 @@ var BLOCKS = [
 	{
 		id:"block-2",
 		size:150,
-		x:205,
+		x:180,
 		y:250
 	},
 	{
@@ -80,17 +80,34 @@ function drawPoints() {
 
 
 // Returns true if blocks overlap (x)
-function isOverlap(homeBlock, intrudingBlock) {
-    return ( intrudingBlock.x > homeBlock.x &&
-	     intrudingBlock.x < (homeBlock.x + homeBlock.size) ) ||
-	( intrudingBlock.x < homeBlock.x &&
-	  (intrudingBlock.x + intrudingBlock.size) > homeBlock.x );
+function isOverlap(homeBlock, intrudingBlock, direction) {
+    var overlap = "";
+    var dir = 0;
+    if (direction == "over") {
+	dir = (homeBlock.y < intrudingBlock.y)
+    }
+    else {
+	dir = (homeBlock.y > intrudingBlock.y)
+    }
+
+    if ( intrudingBlock.x > homeBlock.x &&
+	 intrudingBlock.x < (homeBlock.x + homeBlock.size)
+	 && dir ) {
+	overlap = "right";
+    }
+    else if ( intrudingBlock.x < homeBlock.x &&
+	      (intrudingBlock.x + intrudingBlock.size) > homeBlock.x 
+	      && dir) {
+	overlap = "left";
+    }
+    else overlap = false;
+    return overlap;
 }
 
 function drawCells() {
     for (var i = 0; i < CELLS.length; i++) {
-	line(CELLS[i].x1, CELLS[i].y1, CELLS[i].x2, CELLS[i].y2)
-	line(CELLS[i].x1 + CELLS[i].size, CELLS[i].y1, CELLS[i].x2 + CELLS[i].size, CELLS[i].y2)
+	line(CELLS[i].left[0], CELLS[i].left[1], CELLS[i].left[2], CELLS[i].left[3]);
+	line(CELLS[i].right[0], CELLS[i].right[1], CELLS[i].right[2], CELLS[i].right[3]);
     }
 }
 
@@ -102,21 +119,20 @@ function divideTop(divideBlock, otherBlock0, otherBlock1) {
 	return;
     }
 
-    overlap0 = isOverlap(divideBlock, otherBlock0);
-    overlap1 = isOverlap(divideBlock, otherBlock1);
+    overlap0 = isOverlap(divideBlock, otherBlock0, "under");
+    overlap1 = isOverlap(divideBlock, otherBlock1, "under");
     if (!overlap0 && !overlap1) {
 	// No overlapping, push new cell that extends to the top
 	var newCell = {
-	    x1: divideBlock.x,
-	    y1: divideBlock.y,
-	    x2: divideBlock.x,
-	    y2: 0,
-	    size: divideBlock.size
+	    left: [divideBlock.x, divideBlock.y, divideBlock.x, 0],
+	    right: [divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, 0]
 	};
 	CELLS.push(newCell);
     }
     if (overlap0 && overlap1) {
 	// Both overlap 
+
+
     }
     if (overlap0) {
 	// Only Block 0 is overlapping
@@ -134,53 +150,36 @@ function divideBottom(divideBlock, otherBlock0, otherBlock1) {
 	return;
     }
     
-    overlap0 = isOverlap(divideBlock, otherBlock0);
-    overlap1 = isOverlap(divideBlock, otherBlock1);
+    overlap0 = isOverlap(divideBlock, otherBlock0, "over");
+    overlap1 = isOverlap(divideBlock, otherBlock1, "over");
     if (! overlap0 && ! overlap1) {
 	// no bottom overlaps, push a new cell
 	var newCell = {
-	    x1: divideBlock.x,
-	    y1: divideBlock.x + divideBlock.size,
-	    x2: divideBlock.x,
-	    y2: CANVAS_WIDTH,
-	    size: divideBlock.size
+	    left: [ divideBlock.x, divideBlock.y + divideBlock.size, divideBlock.x, CANVAS_HEIGHT ],
+	    right: [ divideBlock.x + divideBlock.size, divideBlock.y + divideBlock.size, divideBlock.x + divideBlock.size, CANVAS_HEIGHT ]
 	};
+
 	CELLS.push(newCell);
     }
 
 }
 
 
-divideTop(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
-divideTop(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
-divideTop(BLOCKS[2], BLOCKS[0], BLOCKS[1]);
-divideBottom(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
-divideBottom(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
-divideBottom(BLOCKS[2], BLOCKS[1], BLOCKS[2]);
 
-
-//drawCells();
-console.log(CELLS);
 
 
 // Divide region into cells
 // Push barriers on for each block
 // Push barriers for the distance between each block
 function subDivide() {
-    //Block 0
-    if (isOverlap(BLOCKS[0], BLOCKS[1]) || isOverlap(BLOCKS[0], BLOCKS[2])) {
-	if (isOverlap(BLOCKS[0], BLOCKS[1])) {
-	}
-	else {
-	}
-    }
-    else {
-
-    }
-
-
+    divideTop(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
+    divideTop(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
+    divideTop(BLOCKS[2], BLOCKS[0], BLOCKS[1]);
+    divideBottom(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
+    divideBottom(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
+    divideBottom(BLOCKS[2], BLOCKS[1], BLOCKS[2]);
 }
-
+subDivide();
 
 // Build adjacency matrix from cells
 function findAdjacencies() {
@@ -197,13 +196,10 @@ function drawSolution() {
 
 
 function solve() {
-    
     subDivide();
     findAdjacencies();
     searchGraph();
     drawSolution();
-
-
 }
 
 
