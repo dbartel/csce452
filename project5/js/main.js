@@ -2,6 +2,8 @@ var CANVAS_HEIGHT = 500;
 var CANVAS_WIDTH = 500;
 var POINTS = [];
 
+var CELLS = [];
+
 //block variable
 var BLOCKS = [
 	{
@@ -13,13 +15,13 @@ var BLOCKS = [
 	{
 		id:"block-2",
 		size:150,
-		x:100,
+		x:205,
 		y:250
 	},
 	{
 		id:"block-3",
 		size:100,
-		x:300,
+		x:400,
 		y:300
 	}
 ];
@@ -55,7 +57,7 @@ function draw() {
 	background(204);
 	drawBlocks();
 	drawPoints();
-
+    drawCells();
 	//Draw Lights
 	//c = color(255, 204, 0);
 }
@@ -83,6 +85,61 @@ function isOverlap(homeBlock, intrudingBlock) {
 	     intrudingBlock.x < (homeBlock.x + homeBlock.size) ) ||
 	( intrudingBlock.x < homeBlock.x &&
 	  (intrudingBlock.x + intrudingBlock.size) > homeBlock.x );
+}
+
+function drawCells() {
+
+    for (var i = 0; i < CELLS.length; i++) {
+	line(CELLS[i].x1, CELLS[i].y1, CELLS[i].x2, CELLS[i].y2)
+	line(CELLS[i].x1 + CELLS[i].size, CELLS[i].y1, CELLS[i].x2 + CELLS[i].size, CELLS[i].y2)
+    }
+
+}
+
+
+function divideTop(divideBlock, otherBlock0, otherBlock1) {
+
+    // If block is against the top, no top cell needs to be drawn
+    if (divideBlock.y == 0) {
+	return;
+    }
+
+    overlap0 = isOverlap(divideBlock, otherBlock0);
+    overlap1 = isOverlap(divideBlock, otherBlock1);
+    if (!overlap0 && !overlap1) {
+	// No overlapping, push new cell that extends to the top
+	var newCell = {
+	    x1: divideBlock.x,
+	    y1: divideBlock.y,
+	    x2: divideBlock.x,
+	    y2: 0,
+	    size: divideBlock.size
+	};
+	CELLS.push(newCell);
+    }
+    if (overlap0 && overlap1) {
+	// Both overlap 
+    }
+    if (overlap0) {
+	// Only Block 0 is overlapping
+    }
+    if (overlap1) {
+	// Only block 1 is overlapping
+    }
+}
+
+divideTop(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
+divideTop(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
+divideTop(BLOCKS[2], BLOCKS[0], BLOCKS[1]);
+//drawCells();
+console.log(CELLS);
+
+
+function divideBottom(divideBlock, otherBlock0, otherBlock1) {
+
+    overlap0 = isOverlap(divideBlock, otherBlock0);
+    overlap1 = isOverlap(divideBlock, otherBlock1);
+
 }
 
 
