@@ -77,8 +77,31 @@ function drawPoints() {
 }
 
 
+// Returns true if blocks overlap (x)
+function isOverlap(homeBlock, intrudingBlock) {
+    return ( intrudingBlock.x > homeBlock.x &&
+	     intrudingBlock.x < (homeBlock.x + homeBlock.size) ) ||
+	( intrudingBlock.x < homeBlock.x &&
+	  (intrudingBlock.x + intrudingBlock.size) > homeBlock.x );
+}
+
+
 // Divide region into cells
+// Push barriers on for each block
+// Push barriers for the distance between each block
 function subDivide() {
+    //Block 0
+    if (isOverlap(BLOCKS[0], BLOCKS[1]) || isOverlap(BLOCKS[0], BLOCKS[2])) {
+	if (isOverlap(BLOCKS[0], BLOCKS[1])) {
+	}
+	else {
+	}
+    }
+    else {
+
+    }
+
+
 }
 
 
@@ -120,8 +143,8 @@ function findPath(x,y)
 	//set closest point as the values of newVector
 	
 	POINTS.push(newVector);
-	if(newVector.x==END_POINT.x&&newVector.y==END_POINT.y)
+/*	if(newVector.x==END_POINT.x&&newVector.y==END_POINT.y)
 		//we're done
 	else
-		findPath(newVector.x,newVector.y);
+		findPath(newVector.x,newVector.y); */
 }
