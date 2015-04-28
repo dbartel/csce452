@@ -1,6 +1,6 @@
 var CANVAS_HEIGHT = 500;
 var CANVAS_WIDTH = 500;
-
+var POINTS = [];
 
 //block variable
 var BLOCKS = [
@@ -74,4 +74,22 @@ function drawPoints() {
 	fill(200,0,255);
 	ellipse(END_POINT.x, END_POINT.y, 10, 10);
 	fill(0);
+}
+
+//the button press will call this function with the arguments START_POINT.x,START_POINT.y
+//that function will also put START_POINT.x and START_POINT.y 
+function findPath(x,y)
+{
+	var newVector
+	//figure out non blocked points of interest
+	
+	//calculate the closest one
+	
+	//set closest point as the values of newVector
+	
+	POINTS.push(newVector);
+	if(newVector.x==END_POINT.x&&newVector.y==END_POINT.y)
+		//we're done
+	else
+		findPath(newVector.x,newVector.y);
 }
