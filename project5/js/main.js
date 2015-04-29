@@ -9,7 +9,7 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:150,
+		x:50,
 		y:0
 	},
 	{
@@ -284,9 +284,36 @@ function divideTop(divideBlock, otherBlock0, otherBlock1) {
         else if (closestLap == "left") {
             if (BLOCKS[closestBlock].points[1].processed < 2) {
                 newCell.push({
-                    left: [BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, BLOCKS[closestBlock].points[2].y]
-                })
+                    left: [BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, BLOCKS[closestBlock].points[2].y],
+                    right: [BLOCKS[closestBlock].points[3].x, BLOCKS[divideBlock].points[0].y, BLOCKS[closestBlock].points[3].x, BLOCKS[closestBlock].points[3].y]
+                });
             }
+
+            if (farthestLap == "right" || farthestLap == "both") {
+                if (BLOCKS[divideBlock].points[1].processed < 2) {
+                    newCell.push({
+                        left: [BLOCKS[closestBlock].points[3].x, BLOCKS[divideBlock].points[0].y, BLOCKS[closestBlock].points[3].x, BLOCKS[farthestBlock].points[3].y],
+                        right: [BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, BLOCKS[farthestBlock].points[3].y]
+                    });
+                }
+                BLOCKS[closestBlock].points[3].processed += 1;
+                BLOCKS[divideBlock].points[1].processed += 1;
+
+
+            }
+            else if (farthestLap == "left") {
+                if (BLOCKS[divideBlock].points[1].processed < 2) {
+                    newCell.push({
+                        left: [BLOCKS[closestBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[closestBlock].points[1].x, BLOCKS[closestBlock].points[3].y],
+                        right: [BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, 0]
+                    });
+                }
+
+                BLOCKS[closestBlock].points[3].processed += 1;
+                BLOCKS[divideBlock].points[1].processed += 1;
+            }
+
+            addNewCells(newCell);
 
         }
 
