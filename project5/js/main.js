@@ -21,7 +21,7 @@ var BLOCKS = [
 	{
 		id:"block-3",
 		size:100,
-		x:130,
+		x:230,
 		y:380
 	}
 ];
@@ -280,6 +280,14 @@ function divideTop(divideBlock, otherBlock0, otherBlock1) {
                 }
             }
             addNewCells(newCell);
+        }
+        else if (closestLap == "left") {
+            if (BLOCKS[closestBlock].points[1].processed < 2) {
+                newCell.push({
+                    left: [BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, BLOCKS[closestBlock].points[2].y]
+                })
+            }
+
         }
 
     }
