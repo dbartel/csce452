@@ -9,7 +9,7 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:0,
+		x:150,
 		y:0
 	},
 	{
@@ -21,7 +21,7 @@ var BLOCKS = [
 	{
 		id:"block-3",
 		size:100,
-		x:201,
+		x:130,
 		y:380
 	}
 ];
@@ -45,6 +45,7 @@ function setup() {
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
 	noLoop();
+    subDivide();    
 }
 
 
@@ -183,12 +184,17 @@ function divideTopOverlap(overlap, divideBlock, otherBlock) {
     addNewCells(newCell);
 }
 
+function centerRect(block) {
+    var x = (block.points[0].x + block.points[3].x) / 2;
+    var y = (block.points[0].y + block.points[3].y) / 2;
+    return [x,y];
+}
 
 
 function divideTop(divideBlock, otherBlock0, otherBlock1) {
 
     // If block is against the top, no top cell needs to be drawn
-    if (divideBlock.y == 0) {
+    if (BLOCKS[divideBlock].y == 0) {
         return;
     }
 
@@ -197,6 +203,8 @@ function divideTop(divideBlock, otherBlock0, otherBlock1) {
     var newCell = [];
     if (!overlap0 && !overlap1) {
         // No overlapping, push new cell that extends to the top
+
+
 
         newCell.push({
             left: [ BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, 0],
@@ -209,8 +217,70 @@ function divideTop(divideBlock, otherBlock0, otherBlock1) {
     }
 
     else if (overlap0 && overlap1) {
-    // Both overlap 
+        // Both overlap 
+        // grab closest block
+        var closestLap, farthestLap, closestBlock, farthestBlock;
 
+        var divideBlockMd = centerRect(BLOCKS[divideBlock]);
+        var otherBlock0Md = centerRect(BLOCKS[otherBlock0]);
+        var otherBlock1Md = centerRect(BLOCKS[otherBlock1]);        
+
+        if (dist(divideBlockMd[0], divideBlockMd[1], otherBlock0Md[0], otherBlock0Md[1]) < 
+            dist( divideBlockMd[0], divideBlockMd[1], otherBlock1Md[0], otherBlock1Md[1] )) {
+            closestLap = overlap0;
+            farthestLap = overlap1;
+            closestBlock = otherBlock0;
+            farthestBlock = otherBlock1;
+        }
+        else {
+            closestLap = overlap1;
+            farthestLap = overlap0;
+            closestBlock = otherBlock1;
+            farthestBlock = otherBlock0;            
+        }
+        var newCell = [];
+        if (closestLap == "both") {
+            divideTopOverlap(closestLap, divideBlock, closestBlock);
+        }
+        else if (closestLap == "right") {
+            if (BLOCKS[closestBlock].points[2].processed < 2) {
+                newCell.push({
+                    left: [BLOCKS[closestBlock].points[2].x, BLOCKS[divideBlock].points[0].y, BLOCKS[closestBlock].points[0].x, BLOCKS[closestBlock].points[2].y],
+                    right: [BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, BLOCKS[closestBlock].points[2].y]
+                });
+
+                BLOCKS[closestBlock].points[2].processed += 1;
+                BLOCKS[divideBlock].points[1].processed += 1;
+            }
+            if (farthestLap == "left" || farthestLap == "both") {
+                if (BLOCKS[divideBlock].points[0].processed < 2) {
+                    newCell.push({
+                        left: [ BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, BLOCKS[farthestBlock].points[2].y],
+                        right: [ BLOCKS[closestBlock].points[2].x, BLOCKS[divideBlock].points[0].y, BLOCKS[closestBlock].points[2].x, BLOCKS[farthestBlock].points[2].y]
+                    });
+                    BLOCKS[divideBlock].points[0].processed += 2;
+                }
+            }
+            else if (farthestLap == "right") {
+                if (BLOCKS[divideBlock].points[0].processed < 2) {
+                    if (BLOCKS[farthestBlock].points[0].x < BLOCKS[closestBlock].points[0].x) {
+                        newCell.push({
+                            left: [ BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, 0],
+                            right: [ BLOCKS[farthestBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[farthestBlock].points[0].x, BLOCKS[farthestBlock].points[2].y]
+                        });
+                        BLOCKS[divideBlock].points[0].processed += 1;
+                        BLOCKS[farthestBlock].points[2].processed += 1;
+                    }
+                    else {
+                        newCell.push({
+                            left: [ BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, 0],
+                            right: [ BLOCKS[closestBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[closestBlock].points[0].x, BLOCKS[farthestBlock].points[2].y]
+                        })
+                    }
+                }
+            }
+            addNewCells(newCell);
+        }
 
     }
     else if (overlap0) {
@@ -278,7 +348,6 @@ function subDivide() {
     divideTop(0, 1, 2);
     divideTop(1, 2, 0);
     divideTop(2, 0, 1);
-    console.log(BLOCKS);
     // checkProcessed();
 
     // divideBottom(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
@@ -299,7 +368,7 @@ function subDivide() {
 
 
 }
-subDivide();
+
 
 // Build adjacency matrix from cells
 function findAdjacencies() {
