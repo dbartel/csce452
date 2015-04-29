@@ -15,14 +15,14 @@ var BLOCKS = [
 	{
 		id:"block-2",
 		size:150,
-		x:150,
-		y:250
+		x:160,
+		y:210
 	},
 	{
 		id:"block-3",
 		size:100,
-		x:400,
-		y:300
+		x:201,
+		y:380
 	}
 ];
 
@@ -44,8 +44,6 @@ var END_POINT = {
 function setup() {
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
-    
-
 	noLoop();
 }
 
@@ -114,150 +112,192 @@ function drawCells() {
 }
 
 
+function addNewCells(newCells) {
+    _.forEach(newCells, function(c) {
+	if ( ! (_.find(CELLS, function(ch) { 
+	    return (_.isEqual(c.left, ch.left) && _.isEqual(c.right, ch.right)); 
+	}))) {
+	    CELLS.push(c);
+	}
+    });
+
+}
+
+
+function divideTopOverlap(overlap, divideBlock, otherBlock) {
+    var newCell = [];
+    if (overlap == "right") {
+
+        if (BLOCKS[divideBlock].points[1].processed < 2) {
+            newCell.push({
+                left: [BLOCKS[otherBlock].points[2].x, BLOCKS[otherBlock].points[2].y, BLOCKS[otherBlock].points[2].x, BLOCKS[divideBlock].points[0].y],
+                right: [BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, BLOCKS[otherBlock].points[2].y ]
+            });
+            BLOCKS[divideBlock].points[1].processed += 1;
+            BLOCKS[otherBlock].points[2].processed += 1;
+        }
+
+        if (BLOCKS[divideBlock].points[0].processed < 2) {
+            newCell.push({
+                left: [BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, 0],
+                right: [BLOCKS[otherBlock].points[2].x, BLOCKS[divideBlock].points[1].y, BLOCKS[otherBlock].points[2].x, 0]
+            });
+
+            BLOCKS[divideBlock].points[0].processed += 1;
+            BLOCKS[otherBlock].points[2].processed += 1;
+        }
+
+
+    }
+    else if (overlap == "left") {
+
+        if (BLOCKS[divideBlock].points[0].processed < 2) {
+            newCell.push({
+                left: [BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, BLOCKS[otherBlock].points[3].y],
+                right: [ BLOCKS[otherBlock].points[3].x, BLOCKS[otherBlock].points[3].y, BLOCKS[otherBlock].points[3].x, BLOCKS[divideBlock].points[1].y]
+            });
+            BLOCKS[divideBlock].points[0].processed += 1;
+            BLOCKS[otherBlock].points[3].processed += 1;
+        }
+        if (BLOCKS[otherBlock].points[1].processed < 2) {
+            newCell.push({
+                left: [BLOCKS[otherBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[otherBlock].points[1].x, 0],
+                right: [BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, 0]
+            });
+            BLOCKS[otherBlock].points[1].processed += 1;
+            BLOCKS[divideBlock].points[1].processed += 1;
+        }
+
+    }
+    else if (overlap == "both") {
+        if (BLOCKS[divideBlock].points[0].processed < 2) {
+            newCell.push({
+                left: [ BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[0].x, BLOCKS[otherBlock].points[2].y ],
+                right: [ BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, BLOCKS[otherBlock].points[2].y]
+            });
+            BLOCKS[divideBlock].points[0].processed += 1;
+            BLOCKS[divideBlock].points[1].processed += 1;
+        }
+
+    }
+    addNewCells(newCell);
+}
+
+
+
 function divideTop(divideBlock, otherBlock0, otherBlock1) {
 
     // If block is against the top, no top cell needs to be drawn
     if (divideBlock.y == 0) {
-	return;
+        return;
     }
 
-    overlap0 = isOverlap(divideBlock, otherBlock0, "under");
-    overlap1 = isOverlap(divideBlock, otherBlock1, "under");
+    overlap0 = isOverlap(BLOCKS[divideBlock], BLOCKS[otherBlock0], "under");
+    overlap1 = isOverlap(BLOCKS[divideBlock], BLOCKS[otherBlock1], "under");
+    var newCell = [];
     if (!overlap0 && !overlap1) {
-	// No overlapping, push new cell that extends to the top
-	var newCell = {
-	    left: [divideBlock.x, divideBlock.y, divideBlock.x, 0],
-	    right: [divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, 0]
-	};
-	CELLS.push(newCell);
+        // No overlapping, push new cell that extends to the top
+
+        newCell.push({
+            left: [ BLOCKS[divideBlock].points[0].x, BLOCKS[divideBlock].points[0].y, BLOCKS[divideBlock].points[0].x, 0],
+            right: [ BLOCKS[divideBlock].points[1].x, BLOCKS[divideBlock].points[1].y, BLOCKS[divideBlock].points[1].x, 0]
+        });
+
+        BLOCKS[divideBlock].points[0].processed += 1;
+        BLOCKS[divideBlock].points[1].processed += 1;
+        addNewCells(newCell);
     }
-    if (overlap0 && overlap1) {
-	// Both overlap 
 
+    else if (overlap0 && overlap1) {
+    // Both overlap 
 
-    }
-    if (overlap0) {
-	// Only Block 0 is overlapping
-	if (overlap0 == "right") {
-	    newCell.push( {
-		left: [otherBlock1.x, divideBlock.y, otherBlock1.x, otherBlock1.y + otherBlock1.size],
-		right: [ divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, otherBlock1.y + otherBlock1.size ],
-	    });
-
-	    newCell.push( {
-		left: [ divideBlock.x, divideBlock.y, divideBlock.x, 0 ],
-		right: [ otherBlock1.x, divideBlock.y, otherBlock1.x, 0]
-	    });
-
-
-	}
-	else if (overlap0 == "left") {
-	    newCell.push( {
-		left: [ divideBlock.x, divideBlock.y, divideBlock.x, otherBlock0.y + otherBlock0.size ],
-		right: [otherBlock0.x + otherBlock0.size, divideBlock.y, otherBlock0.x + otherBlock0.size, otherBlock0.y + otherBlock0.size]
-	    });
-
-	    newCell.push( {
-		left: [ otherBlock0.x, divideBlock.y, otherBlock0.x, 0 ],
-		right: [ divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, 0]
-	    });
-
-	}
-	else if (overlap0 == "both") {
-	    newCell.push( {
-		left: [ divideBlock.x, divideBlock.y, divideBlock.x , otherBlock0.y ],
-		right: [ divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, otherBlock0.y]
-	    });
-	}
-	_.forEach(newCell, function(c) {
-	    if ( ! (_.find(CELLS, function(c) { 
-		return (_.isEqual(c.left, newCell.left) && _.isEqual(c.right, newCell.right)); 
-	    }))) {
-		CELLS.push(c);
-	    }
-	});
 
     }
-    if (overlap1) {
-	// Only block 1 is overlapping
-	var newCell = [];
-	if (overlap1 == "right") {
-	    newCell.push( {
-		left: [otherBlock1.x, divideBlock.y, otherBlock1.x, otherBlock1.y + otherBlock1.size],
-		right: [ divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, otherBlock1.y + otherBlock1.size ],
-	    });
-
-	    newCell.push( {
-		left: [ divideBlock.x, divideBlock.y, divideBlock.x, 0 ],
-		right: [ otherBlock1.x, divideBlock.y, otherBlock1.x, 0]
-	    });
-
-
-	}
-	else if (overlap1 == "left") {
-	    newCell.push( {
-		left: [ divideBlock.x, divideBlock.y, divideBlock.x, otherBlock1.y + otherBlock1.size ],
-		right: [otherBlock1.x + otherBlock1.size, divideBlock.y, otherBlock1.x + otherBlock1.size, otherBlock1.y + otherBlock1.size]
-	    });
-
-	    newCell.push( {
-		left: [ otherBlock1.x, divideBlock.y, otherBlock1.x, 0 ],
-		right: [ divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, 0]
-	    });
-
-	}
-	else if (overlap1 == "both") {
-	    newCell.push( {
-		left: [ divideBlock.x, divideBlock.y, divideBlock.x , otherBlock1.y ],
-		right: [ divideBlock.x + divideBlock.size, divideBlock.y, divideBlock.x + divideBlock.size, otherBlock1.y]
-	    });
-	}
-	_.forEach(newCell, function(c) {
-	    if ( ! (_.find(CELLS, function(c) { 
-		return (_.isEqual(c.left, newCell.left) && _.isEqual(c.right, newCell.right)); 
-	    }))) {
-		CELLS.push(c);
-	    }
-	});
+    else if (overlap0) {
+        divideTopOverlap(overlap0, divideBlock, otherBlock0);
     }
+    else if (overlap1) {
+        // Only block 1 is overlapping
+        divideTopOverlap(overlap1, divideBlock, otherBlock1);
+    }
+    
 }
 
 
 
 function divideBottom(divideBlock, otherBlock0, otherBlock1) {
     
-    if (divideBlock.y == CANVAS_HEIGHT) {
-	return;
-    }
-    
-    overlap0 = isOverlap(divideBlock, otherBlock0, "over");
-    overlap1 = isOverlap(divideBlock, otherBlock1, "over");
-    if (! overlap0 && ! overlap1) {
-	// no bottom overlaps, push a new cell
-	var newCell = {
-	    left: [ divideBlock.x, divideBlock.y + divideBlock.size, divideBlock.x, CANVAS_HEIGHT ],
-	    right: [ divideBlock.x + divideBlock.size, divideBlock.y + divideBlock.size, divideBlock.x + divideBlock.size, CANVAS_HEIGHT ]
-	};
 
-	CELLS.push(newCell);
-    }
 
 }
 
+function generatePoints(block) {
+    return _.extend(block, {
+        "points": [
+            {
+                x: block.x,
+                y: block.y,
+                processed: 0
+            },
+            {
+                x: block.x + block.size,
+                y: block.y,
+                processed: 0
+            },
+            {
+                x: block.x,
+                y: block.y + block.size,
+                processed: 0
+            },
+            {
+                x: block.x + block.size,
+                y: block.y + block.size,
+                processed: 0
+            },
+        ]
+    });
+}
 
 
+function checkProcessed() {
+    _.forEach(CELLS, function(c) {
 
+    });
+}
 
 // Divide region into cells
 // Push barriers on for each block
 // Push barriers for the distance between each block
 function subDivide() {
-    divideTop(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
-    divideTop(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
-    divideTop(BLOCKS[2], BLOCKS[0], BLOCKS[1]);
-    divideBottom(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
-    divideBottom(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
-    divideBottom(BLOCKS[2], BLOCKS[1], BLOCKS[2]);
+
+    _.forEach(BLOCKS, function(b) {
+        b = generatePoints(b);
+    });
+
+
+    divideTop(0, 1, 2);
+    divideTop(1, 2, 0);
+    divideTop(2, 0, 1);
+    console.log(BLOCKS);
+    // checkProcessed();
+
+    // divideBottom(BLOCKS[0], BLOCKS[1], BLOCKS[2]);
+    // divideBottom(BLOCKS[1], BLOCKS[2], BLOCKS[0]);
+    // divideBottom(BLOCKS[2], BLOCKS[1], BLOCKS[0]);
+
+    console.log(CELLS);
+    window.setTimeout(function() {
+	var lf = document.getElementById("left");
+	var rt = document.getElementById("right");
+	_.forEach(CELLS, function(c) {
+	    lf.innerHTML += "(" + c.left[0] + ", " + c.left[1] + ") - (" + c.left[2] + ", " + c.left[3] + ") <br>";
+	    rt.innerHTML += "(" + c.right[0] + ", " + c.right[1] + ") - (" + c.right[2] + ", " + c.right[3] + ") <br>";
+	});
+    }, 1500);
+
+
+
+
 }
 subDivide();
 
