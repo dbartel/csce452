@@ -38,7 +38,7 @@ var START_POINT = {
 
 var END_POINT = {
 	x:490,
-	y:490
+	y:50
 };
 
 
@@ -49,7 +49,9 @@ var END_POINT = {
 function setup() {
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
-	noLoop();
+	// noLoop();
+    POINTS = [];
+
     // subDivide();
     // findAdjacencies();
     // searchGraph()
@@ -62,6 +64,8 @@ function draw() {
 	background(204);
 	drawBlocks();
 	drawPoints();
+    drawCells();
+    drawSolutionPoints();
     
 }
 
@@ -74,6 +78,15 @@ function drawBlocks() {
 	}
 	fill(255);
 }
+
+function drawSolutionPoints() {
+    // console.log(POINTS);
+    for (var i = 0; i < POINTS.length - 1; i++) {
+        line(POINTS[i].x, POINTS[i].y, POINTS[i+1].x, POINTS[i+1].y);
+    }
+    if (POINTS != []) noLoop();
+}
+
 
 function drawPoints() {
 	fill(0,255,0);
@@ -585,12 +598,15 @@ function cellDFS(start, end) {
     solution.reverse();
     console.log(solution);
     console.log(CELLS);
+
     window.setTimeout(function() {
 
         var sn = document.getElementById("solution");
         sn.innerHTML += "SOLUTION : " + solution.join(" -> ");
 
     }, 1500);
+
+    return solution;
 }
 
 
@@ -599,14 +615,88 @@ function searchGraph() {
     // console.log(CELLS);
     var start_cell = findCell(START_POINT);
     var end_cell = findCell(END_POINT);
-    cellDFS(start_cell, end_cell);
+    return cellDFS(start_cell, end_cell);
+}
+
+function getDirection(start, end) {
+    if (start.right[0] == end.left[0]) {
+        //right
+        return {
+            direction:1,
+            coord:end.left,
+        };
+    }
+    else {
+        //left
+        return {
+            direction:0,
+            coord:end.right,
+        };
+    }
+}
+
+function overOrUnder(start, end) {
+    var endY = [end[1], end[3]];
+    var bottomEnd = _.max(endY);
+    var topEnd = _.min(endY);
+
+    if (start.y < topEnd) {
+        return "over";
+    }
+    else if (start.y > bottomEnd) {
+        return "under";
+    }
+    else {
+        return "fine";
+    }
+
 
 
 
 }
 
 // Render the solution to the canvas
-function drawSolution() {
+function drawSolution(solution) {
+    POINTS.push(START_POINT);
+    var currentCell = findCell(START_POINT);
+    var current_pt = _.clone(START_POINT, true);
+
+    _.forEach(solution, function(s) {
+        //go through solution, get the next cell "gate", align with it
+        var orientation = getDirection(currentCell, CELLS[s]);
+        var direction = orientation.coord;
+
+        var vertical = overOrUnder(current_pt, orientation.coord);
+        if (vertical == "over") {
+            console.log("over " + s);
+            current_pt.y += (direction[3] - current_pt.y - ((direction[3] - direction[1]) / 2));
+            // current_pt.y += (dist(current_pt.x, current_pt.y, direction[2], direction[3]) + (dist(direction[0], direction[1], direction[2], direction[3])  / 2));
+        }
+        else if (vertical == "under") {
+            console.log("under " + s);
+            current_pt.y -= (direction[3] + current_py.y + ((direction[3] - direction[1]) / 2));      
+        }
+
+        if (orientation.direction == 1) {
+            //right
+            current_pt.x += dist(current_pt.x, current_pt.y, direction[0], current_pt.y);
+        }
+        else {
+            //left
+            current_pt.x -= dist(current_pt.x, current_pt.y, direction[0], current_pt.y);
+        }
+
+        POINTS.push(_.clone(current_pt, true));
+        currentCell = CELLS[s];
+
+    });
+
+    POINTS.push(END_POINT);
+
+    console.log(POINTS);
+    redraw();
+
+
 }
 
 
@@ -614,8 +704,8 @@ function solve() {
     subDivide();
     drawCells();
     findAdjacencies();
-    searchGraph();
-    drawSolution();
+    var solution = searchGraph();
+    drawSolution(solution);
 }
 
 
