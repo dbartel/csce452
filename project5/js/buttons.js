@@ -55,7 +55,7 @@ function changeEnd() {
     };
 
     resetSim();
-    displayPts("start", END_POINT);
+    displayPts("end", END_POINT);
 
 }
 

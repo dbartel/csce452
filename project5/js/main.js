@@ -624,19 +624,6 @@ function subDivide() {
     generateCells();
 
 
-    	var lf = document.getElementById("left");
-    	var rt = document.getElementById("right");
-    	_.forEach(CELLS, function(c, i) {
-    	    lf.innerHTML += i + " (" + c.left[0] + ", " + c.left[1] + ") - (" + c.left[2] + ", " + c.left[3] + ") <br>";
-    	    rt.innerHTML += "(" + c.right[0] + ", " + c.right[1] + ") - (" + c.right[2] + ", " + c.right[3] + ") <br>";
-    	});
-        var pr = document.getElementById("processed");
-        _.forEach(BLOCKS, function(c,i) {
-            pr.innerHTML += i + "-" + c.points[0].processed + " " +  c.points[1].processed + " " +  c.points[2].processed + " " + c.points[3].processed + "<br>";
-        });
-
-
-
 
 }
 
