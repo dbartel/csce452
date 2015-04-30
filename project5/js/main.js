@@ -6,12 +6,15 @@ var CELLS = [];
 
 var CELL_LINES = [];
 
+var LEFT_CELL = false;
+var RIGHT_CELL = false;
+
 //block variable
 var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:50,
+		x:10,
 		y:20
 	},
 	{
@@ -47,10 +50,10 @@ function setup() {
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
 	noLoop();
-    subDivide();    
+    subDivide();
+    findAdjacencies();
+    searchGraph()
 }
-var mx = 5;
-var my = 5;
 
 /**
 * draw code (refreshes)
@@ -60,14 +63,9 @@ function draw() {
 	drawBlocks();
 	drawPoints();
     drawCells();
-text(mx + " " + my, 400, 400);
 }
 
-function mouseMoved() {
-    mx = mouseX;
-    my = mouseY;
-    redraw();
-}
+
 
 function drawBlocks() {
 	fill(0);
@@ -137,19 +135,6 @@ function drawCells() {
 
 
 
-
-
-function addNewCells(newCells) {
-    _.forEach(newCells, function(c) {
-	if ( ! (_.find(CELLS, function(ch) { 
-	    return (_.isEqual(c.left, ch.left) && _.isEqual(c.right, ch.right)); 
-	}))) {
-	    CELLS.push(c);
-	}
-    });
-
-}
-
 function generatePoints(block) {
     return _.extend(block, {
         "points": [
@@ -180,14 +165,6 @@ function generatePoints(block) {
         ]
     });
 }
-
-function centerRect(block) {
-    var x = (block.points[0].x + block.points[3].x) / 2;
-    var y = (block.points[0].y + block.points[3].y) / 2;
-    return [x,y];
-}
-
-
 
 
 
@@ -309,6 +286,14 @@ function addCell(cline) {
 
 function generateCells() {
 
+    var itStart = 0;
+    if (LEFT_CELL) {
+        itStart += 1;
+    }
+    if (RIGHT_CELL) {
+        itStart += 2;
+    }
+//3
     for (var i = 3; i < CELL_LINES.length; i++) {
         addCell(CELL_LINES[i]);
     }
@@ -324,8 +309,8 @@ function generateCells() {
                 }
 
                 // special case for ends
-                if ( (bi == 0) && (pi == 0 || pi == 2) && (ci == 0)) p.processed += 1;
-                if ( (bi == 2) && (pi == 1 || pi == 4) && (ci == 0)) p.processed += 1;
+                if ( LEFT_CELL && (bi == 0) && (pi == 0 || pi == 2) && (ci == 0)) p.processed += 1;
+                if ( RIGHT_CELL && (bi == 2) && (pi == 1 || pi == 4) && (ci == 0)) p.processed += 1;
 
             });            
         });
@@ -364,7 +349,14 @@ function generateCells() {
 
     CELLS = _.sortBy(CELLS, function(c) {
         return c.left[0];
+    });
+
+    _.forEach(CELLS, function(c, n) {
+        _.extend(c, {
+            id: n
+        });
     })
+
 }
 
 // Divide region into cells
@@ -386,22 +378,28 @@ function subDivide() {
 
     //add leftmost (border + left edge)
 
-    CELL_LINES.push([0, top, top, bottom]);
-    CELL_LINES.push([BLOCKS[0].points[0].x, top, BLOCKS[0].points[0].x, bottom]);
+    if (BLOCKS[0].points[0].x > 0) {
+        CELL_LINES.push([0, top, top, bottom]);
+        CELL_LINES.push([BLOCKS[0].points[0].x, top, BLOCKS[0].points[0].x, bottom]);
 
-    CELLS.push({
-        left: CELL_LINES[0],
-        right: CELL_LINES[1]
-    });
+        CELLS.push({
+            left: CELL_LINES[0],
+            right: CELL_LINES[1]
+        });
+        LEFT_CELL = true;
+    }
 
     // add rightmost (border + right edge)
 
-    CELL_LINES.push([BLOCKS[2].points[3].x, top, BLOCKS[2].points[3].x, bottom]);
-    CELL_LINES.push([CANVAS_WIDTH, top, CANVAS_WIDTH, bottom]);
-    CELLS.push({
-        left: CELL_LINES[2],
-        right: CELL_LINES[3]
-    });
+    if (BLOCKS[2].points[3].x < CANVAS_WIDTH) {
+        CELL_LINES.push([BLOCKS[2].points[3].x, top, BLOCKS[2].points[3].x, bottom]);
+        CELL_LINES.push([CANVAS_WIDTH, top, CANVAS_WIDTH, bottom]);
+        CELLS.push({
+            left: CELL_LINES[2],
+            right: CELL_LINES[3]
+        });
+        RIGHT_CELL = true;
+    }
 
     // BLOCKS[0].points[0].processed += 1;
     // BLOCKS[0].points[2].processed += 1;
@@ -488,12 +486,6 @@ function subDivide() {
     generateCells();
 
 
-
-
-
-
-    console.log(BLOCKS);
-    console.log(CELL_LINES);
     window.setTimeout(function() {
     	var lf = document.getElementById("left");
     	var rt = document.getElementById("right");
@@ -515,11 +507,89 @@ function subDivide() {
 
 // Build adjacency matrix from cells
 function findAdjacencies() {
+     // if right x matches left x, we got an adjacency
+    _.forEach(CELLS, function(c) {
+        var adjacencyList = [];
+        _.forEach(CELLS, function(n, ni) {
+            if (c.right[0] == n.left[0] ||
+                c.left[0] == n.right[0]
+                ) {
+                adjacencyList.push(ni);
+            }
+        });
+        _.extend(c, {
+            adjacencyList: adjacencyList
+        });
+    });
+    
+}
+
+
+//given a coordinate point, figure out which cell it's in
+function findCell(pt) {
+    var s = {};
+    _.forEach(CELLS, function(c) {
+        if ((pt.x > c.left[0] && pt.x < c.right[0]) && 
+            (pt.y > c.left[1] && pt.y < c.left[3])) {
+            s = c;
+        }
+    });
+
+    return s;
+
+}
+
+function recursiveDFS(node) {
+    _.extend(node,{visited: true});
+
+
+   _.forEach(node.adjacencyList, function(adj) {
+       if (!CELLS[adj].visited) {
+           CELLS[adj].parent.push(node.id);
+           recursiveDFS(CELLS[adj]);
+       }
+   });
+}
+
+
+function cellDFS(start, end) {
+    var path = [];
+
+    //Graph Init
+    _.forEach(CELLS, function(c) {
+        if (c != start) _.extend(c, { visited: false});
+        else _.extend(c, {visited: true});
+
+        _.extend(c, {
+            parent: []
+        });
+
+    });
+
+    recursiveDFS(start);
+
+    var solution = [];
+    var tmpCell = end;
+
+    do  {
+        solution.push(tmpCell.id);
+        tmpCell = CELLS[tmpCell.parent];
+    } while (tmpCell != start);
+    solution.reverse();
+    console.log(solution);
+    console.log(CELLS);
 }
 
 
 //Use some sort of search algorithm to find a solution
 function searchGraph() {
+    // console.log(CELLS);
+    var start_cell = findCell(START_POINT);
+    var end_cell = findCell(END_POINT);
+    cellDFS(start_cell, end_cell);
+
+
+
 }
 
 // Render the solution to the canvas
@@ -535,21 +605,3 @@ function solve() {
 }
 
 
-
-//the button press will call this function with the arguments START_POINT.x,START_POINT.y
-//that function will also put START_POINT.x and START_POINT.y 
-function findPath(x,y)
-{
-	var newVector
-	//figure out non blocked points of interest
-	
-	//calculate the closest one
-	
-	//set closest point as the values of newVector
-	
-	POINTS.push(newVector);
-/*	if(newVector.x==END_POINT.x&&newVector.y==END_POINT.y)
-		//we're done
-	else
-		findPath(newVector.x,newVector.y); */
-}
