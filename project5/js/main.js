@@ -14,7 +14,7 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:140,
+		x:300,
 		y:180
 	},
 	{
@@ -26,7 +26,7 @@ var BLOCKS = [
 	{
 		id:"block-3",
 		size:100,
-		x: 360,
+		x: 140,
 		y:300
 	}
 ];
@@ -316,7 +316,7 @@ function countProcessed() {
 
 function generateCells() {
 
-    _.forEach(BLOCKS, function(b) {
+    _.forEach(BLOCKS, function(b, bi) {
         var blks = _.filter(BLOCKS, function(m) {return m != b;});
 
         if (b.points[0].y == 0) {
@@ -326,11 +326,12 @@ function generateCells() {
             ptOrigin = 0;
         }
 
-        var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
-        var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
-        var missingCoords = [ up[2], up[3], down[2], down[3] ];
-        CELL_LINES.push(missingCoords);
-
+        if (bi != 0) {
+            var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
+            var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+            var missingCoords = [ up[2], up[3], down[2], down[3] ];
+            CELL_LINES.push(missingCoords);
+        }
 
         if (b.points[1].y == 0) {
             ptOrigin = 3;
@@ -340,10 +341,12 @@ function generateCells() {
         }
 
 
-        var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
-        var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
-        var missingCoords = [ up[2], up[3], down[2], down[3] ];
-        CELL_LINES.push(missingCoords);
+        if (bi != 2) {
+            var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
+            var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+            var missingCoords = [ up[2], up[3], down[2], down[3] ];
+            CELL_LINES.push(missingCoords);
+        }
     })
 
 
@@ -639,9 +642,14 @@ function findAdjacencies() {
 //given a coordinate point, figure out which cell it's in
 function findCell(pt) {
     var s = {};
+
     _.forEach(CELLS, function(c) {
+
+        var maxY = min(c.left[1], c.left[3]);
+        var minY = max(c.left[1], c.left[3]);
+
         if ((pt.x >= c.left[0] && pt.x < c.right[0]) && 
-            (pt.y >= c.left[1] && pt.y < c.left[3])) {
+            (pt.y >= maxY && pt.y < minY)) {
             s = c;
         }
     });
@@ -692,6 +700,7 @@ function cellDFS(start, end) {
 
     var solution = [];
     var tmpCell = end;
+    console.log(tmpCell);
 
     do  {
         solution.push(tmpCell.id);
@@ -699,7 +708,6 @@ function cellDFS(start, end) {
     } while (tmpCell != start);
     solution.reverse();
     console.log(solution);
-    console.log(CELLS);
 
 
         var sn = document.getElementById("solution");
@@ -804,6 +812,7 @@ function solve() {
     subDivide();
     drawCells();
     findAdjacencies();
+
     var solution = searchGraph();
     drawSolution(solution);
 }
