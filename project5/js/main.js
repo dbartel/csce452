@@ -15,19 +15,19 @@ var BLOCKS = [
 		id:"block-1",
 		size: 200,
 		x:50,
-		y:0
+		y:300
 	},
 	{
 		id:"block-2",
 		size:150,
 		x:150,
-		y:300
+		y:0
 	},
 	{
 		id:"block-3",
 		size:100,
-		x:310,
-		y:206
+		x:265,
+		y:299
 	}
 ];
 
@@ -201,7 +201,7 @@ function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
 
     if (!collide0 && !collide1) {
         //no collision draw straight down
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, CANVAS_HEIGHT];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, CANVAS_HEIGHT, srcBlock.size];
 
     }
     else if (collide0 && collide1) {
@@ -209,20 +209,20 @@ function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
         if (dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock0.points[0].x, iBlock0.points[0].y) <
             dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock1.points[0].x, iBlock1.points[0].y)) {
             //draw line to iBlock0
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y, srcBlock.size];
         }
         else {
             // line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y];
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y, srcBlock.size];
         }
     }
     else if (collide0) {
         //draw line to iBlock0
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y, srcBlock.size];
 
     }
     else if (collide1) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y, srcBlock.size];
 
     }
 
@@ -237,23 +237,23 @@ function getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1) {
 
     var line = [];
     if (!collide0 && !collide1) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, 0];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, 0, srcBlock.size];
     }
     else if (collide0 && collide1) {
         if (dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock0.points[2].x, iBlock0.points[2].y) <
             dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock1.points[2].x, iBlock1.points[2].y)) {
 
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y, srcBlock.size];
         }
         else {
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y, srcBlock.size];
         }
     }
     else if (collide0) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y, srcBlock.size];
     }
     else if (collide1) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y, srcBlock.size];
     }
 
     return line;
@@ -264,11 +264,14 @@ function getMatches(cline) {
     // Want to match a line that 
     // 1. is to the right of our line
     // 2. has the same y values as our line
+    // 3. doesn't hit any obstacles
     var matches = _.filter(CELL_LINES, function(c) {
         return (c[0] > cline[0])
         &&
             ((c[1] == cline[1] && c[3] == cline[3]) ||
               (c[1] == cline[3] && c[3] == cline[1])  
+        &&
+            (Math.abs((c[0] - cline[0])) <= 300)
                 );
     });
     matches = _.sortBy(matches, function(n) { return n[0]; });
@@ -282,9 +285,12 @@ function getLeftMatches(cline) {
         &&
             ((c[1] == cline[1] && c[3] == cline[3]) ||
               (c[1] == cline[3] && c[3] == cline[1])  
+        &&
+            (Math.abs(cline[0] - c[0]) <= 300)
                 );
     });
-    matches = _.sortBy(matches, function(n) { return n[0]; });
+
+    matches = _.sortBy(matches, function(n) { return -n[0]; });
     return matches;    
 }
 
@@ -313,12 +319,16 @@ function countProcessed() {
     //build cells that filter missed
     _.forEach(BLOCKS, function(b, bi) {
         _.forEach(b.points, function(p, pi) {
+
+            if (p.y == 0 || p.y == CANVAS_HEIGHT) p.processed += 1;
             _.forEach(CELLS, function(c, ci) {
                 if ( (c.left[0] == p.x || c.right[0] == p.x) && 
                       (c.left[1] == p.y ||c.left[3] == p.y)
-                    ) {
+                    ) { 
                     p.processed += 1;
                 }
+
+                
 
                 // special case for ends
                 if ( (bi == 0) && (pi == 0 || pi == 2) && (ci == 0)) p.processed += 1;
@@ -347,44 +357,95 @@ function generateCells() {
 
     countProcessed();
 
-
-
     var missedCells = [];
+
     _.forEach(BLOCKS, function(b, bi) {
-        var missedCells = _.filter(b.points, function(b) {
-            return b.processed < 2;
-        });
 
+        console.log(bi + " " + b.points[0].processed + " " + b.points[1].processed + " " + b.points[2].processed + " " + b.points[3].processed )
 
-        _.forEach(missedCells, function(m) {
-            if ( bi == 0 && (m.id == 0 || m.id == 2)) {
-                return;
+        var blks = _.filter(BLOCKS, function(m) {return m != b;});
+        if (b.points[0].processed < 2 && b.points[2].processed < 2) {
+            console.log("LEFT");
+            var up = getLineCoordsUp(b, 0, blks[0], blks[1]);
+            var down = getLineCoordsDown(b, 0, blks[0], blks[1]);
+            var missingCoords = [ up[2], up[3], down[2], down[3] ]
+            CELL_LINES.push(missingCoords);
+            missedCells.push(missingCoords);
+            // addCell(missingCoords);
+            // addLeftCell(missingCoords);
+        }
+
+        if (b.points[1].processed < 2 && b.points[3].processed < 2) {
+            console.log("RIGHT");
+
+            var ptOrigin;
+            if (b.points[1].y == 0) {
+                ptOrigin = 3;
             }
-            if ( bi == 2 && (m.id == 1 || m.id == 3)) {
-                return;
-            }
-
-             //getLineCoordsDown getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1)
-            if (m.id == 0 || m.id == 1) {
-
-
-
-                var blks = _.filter(BLOCKS, function(m) {return m != b;});
-                var up = getLineCoordsUp(b, m.id, blks[0], blks[1]);
-                var down = getLineCoordsDown(b, m.id, blks[0], blks[1]);
-                var missingCoords = [ up[2], up[3], down[2], down[3] ];
-                CELL_LINES.push(missingCoords);
-                addCell(missingCoords);
-
-                if (up[3] + down[3] != CANVAS_HEIGHT) addLeftCell(missingCoords);
-                
+            else {
+                ptOrigin = 1;
             }
 
-        });
+            var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
+            var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+
+            var missingCoords = [ up[2], up[3], down[2], down[3] ]
+            CELL_LINES.push(missingCoords);
+            missedCells.push(missingCoords);
+            // addCell(missingCoords); 
+            // addLeftCell(missingCoords);
+        }
+
     });
+
+
+    
+
+    missedCells.reverse();
+    _.forEach(missedCells, function(m) {
+        addCell(m);
+        addLeftCell(m);
+    })
+
+
+
+    // var missedCells = [];
+    // _.forEach(BLOCKS, function(b, bi) {
+    //     var missedCells = _.filter(b.points, function(b) {
+    //         return b.processed < 2;
+    //     });
+
+
+    //     _.forEach(missedCells, function(m) {
+    //         if ( bi == 0 && (m.id == 0 || m.id == 2)) {
+    //             return;
+    //         }
+    //         if ( bi == 2 && (m.id == 1 || m.id == 3)) {
+    //             return;
+    //         }
+
+    //          //getLineCoordsDown getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1)
+    //         if (m.id == 0 || m.id == 1) {
+
+
+
+    //             var blks = _.filter(BLOCKS, function(m) {return m != b;});
+    //             var up = getLineCoordsUp(b, m.id, blks[0], blks[1]);
+    //             var down = getLineCoordsDown(b, m.id, blks[0], blks[1]);
+    //             var missingCoords = [ up[2], up[3], down[2], down[3] ];
+    //             CELL_LINES.push(missingCoords);
+    //             addCell(missingCoords);
+
+
+    //             addLeftCell(missingCoords);
+                
+    //         }
+
+    //     });
+    // });
     CELLS = _.uniq(CELLS, function(c) {
         return JSON.stringify(c);
-    })
+    });
 
     CELLS = _.sortBy(CELLS, function(c) {
         return c.left[0];
@@ -738,7 +799,6 @@ function drawSolution(solution) {
 function solve() {
     subDivide();
     drawCells();
-    console.log(CELL_LINES);
     findAdjacencies();
     var solution = searchGraph();
     drawSolution(solution);
