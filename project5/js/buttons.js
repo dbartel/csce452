@@ -51,6 +51,12 @@ function initListeners() {
     listElements("blocks","BLOCKS");
     listPoint("start","START_POINT");
     listPoint("end", "END_POINT");
+	
+	var begin = document.getElementById("begin");
+	
+	begin.addEventListener("click", function() {
+        decomp();
+    })
 
 }
 

@@ -80,7 +80,7 @@ function drawPoints() {
 //that function will also put START_POINT.x and START_POINT.y 
 function findPath(x,y)
 {
-	var newVector
+	/*var newVector
 	//figure out non blocked points of interest
 	
 	//calculate the closest one
@@ -91,5 +91,35 @@ function findPath(x,y)
 	if(newVector.x==END_POINT.x&&newVector.y==END_POINT.y)
 		//we're done
 	else
-		findPath(newVector.x,newVector.y);
+		findPath(newVector.x,newVector.y);*/
+}
+
+//Cell decomp method
+function decomp(){
+	//Find cells
+	var collisionPathA = createVector(0,0);
+	var collisionPathB = createVector(0,0);
+	var collisionPathC = createVector(0,0);
+	var first,second,third;
+	
+	//Find leftmost square 
+	var leftmost = 500;
+	var rightmost = 0;
+	for(var j = 0; j < BLOCKS.length; j++){
+		if (BLOCKS[j].x < leftmost) {
+			leftmost = BLOCKS[j].x;
+			first = j;
+		}
+		if (BLOCKS[j].x > rightmost) {
+			rightmost = BLOCKS[j].x;
+			third = j;
+		}
+	}
+	second = 0;
+	for (var i=0; i < 3; i++){
+		if (first + i + third == 3) second = i;		
+	}
+
+	
+	
 }
