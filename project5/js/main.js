@@ -14,20 +14,20 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:50,
-		y:300
+		x:140,
+		y:180
 	},
 	{
 		id:"block-2",
 		size:150,
-		x:150,
+		x:50,
 		y:0
 	},
 	{
 		id:"block-3",
 		size:100,
-		x:265,
-		y:299
+		x: 360,
+		y:300
 	}
 ];
 
@@ -108,34 +108,6 @@ function drawPoints() {
 	fill(0);
 }
 
-// ...
-// Returns true if blocks overlap (x)
-function isOverlap(homeBlock, intrudingBlock, direction) {
-    var overlap = "";
-    var dir = 0;
-    if (direction == "over") {
-	dir = (homeBlock.y < intrudingBlock.y)
-    }
-    else {
-	dir = (homeBlock.y > intrudingBlock.y)
-    }
-
-    if ( (intrudingBlock.x < homeBlock.x) && ( (intrudingBlock.x + intrudingBlock.size) > (homeBlock.x + homeBlock.size))) {
-	overlap = "both";
-    }
-    else if ( intrudingBlock.x > homeBlock.x &&
-	      intrudingBlock.x < (homeBlock.x + homeBlock.size)
-	      && dir ) {
-	overlap = "right";
-    }
-    else if ( intrudingBlock.x < homeBlock.x &&
-	      (intrudingBlock.x + intrudingBlock.size) > homeBlock.x 
-	      && dir) {
-	overlap = "left";
-    }
-    else overlap = false;
-    return overlap;
-}
 
 function drawCells() {
     for (var i = 0; i < CELL_LINES.length; i++) {
@@ -344,6 +316,38 @@ function countProcessed() {
 
 function generateCells() {
 
+    _.forEach(BLOCKS, function(b) {
+        var blks = _.filter(BLOCKS, function(m) {return m != b;});
+
+        if (b.points[0].y == 0) {
+            ptOrigin = 2;
+        }
+        else {
+            ptOrigin = 0;
+        }
+
+        var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
+        var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+        var missingCoords = [ up[2], up[3], down[2], down[3] ];
+        CELL_LINES.push(missingCoords);
+
+
+        if (b.points[1].y == 0) {
+            ptOrigin = 3;
+        }
+        else {
+            ptOrigin = 1;
+        }
+
+
+        var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
+        var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+        var missingCoords = [ up[2], up[3], down[2], down[3] ];
+        CELL_LINES.push(missingCoords);
+    })
+
+
+
     var itStart = 0;
     if (LEFT_CELL) {
         itStart += 2;
@@ -357,55 +361,55 @@ function generateCells() {
 
     countProcessed();
 
-    var missedCells = [];
+    // var missedCells = [];
 
-    _.forEach(BLOCKS, function(b, bi) {
+    // _.forEach(BLOCKS, function(b, bi) {
 
-        console.log(bi + " " + b.points[0].processed + " " + b.points[1].processed + " " + b.points[2].processed + " " + b.points[3].processed )
+    //     console.log(bi + " " + b.points[0].processed + " " + b.points[1].processed + " " + b.points[2].processed + " " + b.points[3].processed )
 
-        var blks = _.filter(BLOCKS, function(m) {return m != b;});
-        if (b.points[0].processed < 2 && b.points[2].processed < 2) {
-            console.log("LEFT");
-            var up = getLineCoordsUp(b, 0, blks[0], blks[1]);
-            var down = getLineCoordsDown(b, 0, blks[0], blks[1]);
-            var missingCoords = [ up[2], up[3], down[2], down[3] ]
-            CELL_LINES.push(missingCoords);
-            missedCells.push(missingCoords);
-            // addCell(missingCoords);
-            // addLeftCell(missingCoords);
-        }
+    //     var blks = _.filter(BLOCKS, function(m) {return m != b;});
+    //     if (b.points[0].processed < 2 && b.points[2].processed < 2) {
+    //         console.log("LEFT");
+    //         var up = getLineCoordsUp(b, 0, blks[0], blks[1]);
+    //         var down = getLineCoordsDown(b, 0, blks[0], blks[1]);
+    //         var missingCoords = [ up[2], up[3], down[2], down[3] ]
+    //         CELL_LINES.push(missingCoords);
+    //         missedCells.push(missingCoords);
+    //         // addCell(missingCoords);
+    //         // addLeftCell(missingCoords);
+    //     }
 
-        if (b.points[1].processed < 2 && b.points[3].processed < 2) {
-            console.log("RIGHT");
+    //     if (b.points[1].processed < 2 && b.points[3].processed < 2) {
+    //         console.log("RIGHT");
 
-            var ptOrigin;
-            if (b.points[1].y == 0) {
-                ptOrigin = 3;
-            }
-            else {
-                ptOrigin = 1;
-            }
+    //         var ptOrigin;
+    //         if (b.points[1].y == 0) {
+    //             ptOrigin = 3;
+    //         }
+    //         else {
+    //             ptOrigin = 1;
+    //         }
 
-            var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
-            var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+    //         var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
+    //         var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
 
-            var missingCoords = [ up[2], up[3], down[2], down[3] ]
-            CELL_LINES.push(missingCoords);
-            missedCells.push(missingCoords);
-            // addCell(missingCoords); 
-            // addLeftCell(missingCoords);
-        }
+    //         var missingCoords = [ up[2], up[3], down[2], down[3] ]
+    //         CELL_LINES.push(missingCoords);
+    //         missedCells.push(missingCoords);
+    //         // addCell(missingCoords); 
+    //         // addLeftCell(missingCoords);
+    //     }
 
-    });
+    // });
 
 
     
 
-    missedCells.reverse();
-    _.forEach(missedCells, function(m) {
-        addCell(m);
-        addLeftCell(m);
-    })
+    // missedCells.reverse();
+    // _.forEach(missedCells, function(m) {
+    //     addCell(m);
+    //     addLeftCell(m);
+    // })
 
 
 
@@ -636,8 +640,8 @@ function findAdjacencies() {
 function findCell(pt) {
     var s = {};
     _.forEach(CELLS, function(c) {
-        if ((pt.x > c.left[0] && pt.x < c.right[0]) && 
-            (pt.y > c.left[1] && pt.y < c.left[3])) {
+        if ((pt.x >= c.left[0] && pt.x < c.right[0]) && 
+            (pt.y >= c.left[1] && pt.y < c.left[3])) {
             s = c;
         }
     });

@@ -1,69 +1,50 @@
 var DIVS = [];
 
-//Generic display element to vehicle/light lists
-function listElements(parentId, arr) {
-    var parent = document.getElementById(parentId);
-    for (var i = 0; i < window[arr].length; i++) {
-        if (!window[arr][i].listed) {
-            var dv = document.createElement("div");
-            dv.innerHTML = "(" + window[arr][i].x + "," + window[arr][i].y + ")";
-			DIVS.push(dv);
-            dv.id = window[arr][i].id;
-            dv.class = "list-item";
-            dv.addEventListener("click", function() {
-                // removeElement(dv.id, parentId, arr);
-                // console.log(this.id);
-                var it = Number(this.id.substr(6,1)) - 1;
-                var newX = window.prompt("Enter new x");
-                var newY = window.prompt("Enter new y");
-                window[arr][it].x = newX;
-                window[arr][it].y = newY;
-                redraw();
-				//console.log(it);
-				DIVS[it].innerHTML = "(" + window[arr][it].x + "," + window[arr][it].y + ")";
-            });
 
-            parent.appendChild(dv);
-            window[arr][i].listed = true;
-
-        }
-    }
+function displayB(b, spn) {
+    console.log(b);
+    spn.innerHTML = "Size: " + b.size + " Position (" + b.x + ", " + b.y + ")";
 }
 
 
-function listPoint(parentId, pt) {
-    var parent = document.getElementById(parentId);
-    var dv = document.createElement("div");
+function changePosition(id, spn) {
+    var b = _.find(BLOCKS, function(bk) {return bk.id == id;});
+    var newX = window.prompt("New X: ");
+    var newY = window.prompt("New Y: ");
+    b.x = newX;
+    b.y = newY;
 
-    dv.innerHTML = "(" + window[pt].x + "," + window[pt].y + ")";
-    dv.addEventListener("click", function() {
-        var newX = window.prompt("Enter new x");
-        var newY = window.prompt("Enter new y");
+    displayB(b, spn);
+}
 
-        window[pt].x = newX;
-        window[pt].y = newY;
-        redraw();
-		dv.innerHTML = "(" + window[pt].x + "," + window[pt].y + ")";
-    });
+function initButton(bid, spid) {
+   var btn = document.getElementById(bid);
+   var spn = document.getElementById(spid);
 
-    parent.appendChild(dv);
-    
+   btn.addEventListener("click", function() {
+       changePosition(spid, spn);
+       resetSim();
+   });
 }
 
 
 
 function initListeners() {
-    listElements("blocks","BLOCKS");
-    listPoint("start","START_POINT");
-    listPoint("end", "END_POINT");
-	
+
 	var begin = document.getElementById("begin");
 	
 	begin.addEventListener("click", function() {
-        // decomp();
         resetSim();
         solve();
-    })
+    });
+
+    // var btn, spn;
+    for (var i = 1; i < 4; i++) {
+        initButton("btn-" + i, "block-" + i);
+        var id = (i-1)
+        displayB(BLOCKS[id], document.getElementById("block-" + i));
+
+    }
 
 }
 
