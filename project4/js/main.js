@@ -161,14 +161,14 @@ function calculateSpeed(index){
 	var s1 =0;
 	var s2 =0;
 	for (i =0; i< LIGHT_SOURCES.length; i++){
-		distanceS1 = dist(LIGHT_SOURCES[0].x,LIGHT_SOURCES[0].y, Number(VEHICLES[index].x1) + 10 , Number(VEHICLES[index].y1));
-		distanceS2 = dist(LIGHT_SOURCES[0].x,LIGHT_SOURCES[0].y, Number(VEHICLES[index].x1) + 40 , Number(VEHICLES[index].y1));
+		distanceS1 = dist(LIGHT_SOURCES[i].x,LIGHT_SOURCES[i].y, Number(VEHICLES[index].x1) + 10 , Number(VEHICLES[index].y1));
+		distanceS2 = dist(LIGHT_SOURCES[i].x,LIGHT_SOURCES[i].y, Number(VEHICLES[index].x1) + 40 , Number(VEHICLES[index].y1));
 		
 	//console.log(distanceS1);
 	//console.log(distanceS2);
 		
-		s1 = 100 / distanceS1;
-		s2 = 100 / distanceS2;
+		s1 += 100 / distanceS1;
+		s2 += 100 / distanceS2;
 	}
 	//console.log(s1);
 	//console.log(s2);
