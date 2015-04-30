@@ -15,7 +15,7 @@ var BLOCKS = [
 		id:"block-1",
 		size: 200,
 		x:20,
-		y:0
+		y:20
 	},
 	{
 		id:"block-2",
@@ -559,14 +559,25 @@ function findCell(pt) {
 
 }
 
-function recursiveDFS(node) {
+function recursiveDFS(node, end) {
     _.extend(node,{visited: true});
+
+    var testEnd = _.find(node.adjacencyList, function(n) {return n == end;});
+    if (testEnd) {
+        CELLS[end].parent.push(node.id);
+        _.forEach(CELLS, function(c) {
+            _.extend(c, {
+                visited:true
+            });
+        });
+        return;
+    }
 
 
    _.forEach(node.adjacencyList, function(adj) {
        if (!CELLS[adj].visited) {
-           CELLS[adj].parent.push(node.id);
-           recursiveDFS(CELLS[adj]);
+            CELLS[adj].parent.push(node.id);
+            recursiveDFS(CELLS[adj], end);
        }
    });
 }
@@ -586,7 +597,7 @@ function cellDFS(start, end) {
 
     });
 
-    recursiveDFS(start);
+    recursiveDFS(start, end.id);
 
     var solution = [];
     var tmpCell = end;
@@ -674,7 +685,7 @@ function drawSolution(solution) {
         }
         else if (vertical == "under") {
             console.log("under " + s);
-            current_pt.y -= (direction[3] + current_py.y + ((direction[3] - direction[1]) / 2));      
+            current_pt.y -= (direction[3] + current_pt.y + ((direction[3] - direction[1]) / 2));      
         }
 
         if (orientation.direction == 1) {
