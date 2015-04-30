@@ -14,20 +14,20 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:10,
-		y:20
+		x:50,
+		y:0
 	},
 	{
 		id:"block-2",
 		size:150,
-		x:200,
-		y:235
+		x:150,
+		y:300
 	},
 	{
 		id:"block-3",
 		size:100,
-		x:130,
-		y:400
+		x:310,
+		y:206
 	}
 ];
 
@@ -92,6 +92,7 @@ function drawSolutionPoints() {
 function resetSim() {
     CELLS = [];
     POINTS = [];
+    CELL_LINES = [];
     LEFT_CELL = false;
     RIGHT_CELL = false; 
     clear();
@@ -319,8 +320,6 @@ function countProcessed() {
                     p.processed += 1;
                 }
 
-
-
                 // special case for ends
                 if ( (bi == 0) && (pi == 0 || pi == 2) && (ci == 0)) p.processed += 1;
                 if ( (bi == 2) && (pi == 1 || pi == 3) && (ci == 0)) p.processed += 1;
@@ -358,15 +357,18 @@ function generateCells() {
 
 
         _.forEach(missedCells, function(m) {
-            if (bi == 0 && (m.id == 0 || m.id == 2)) {
+            if ( bi == 0 && (m.id == 0 || m.id == 2)) {
                 return;
             }
-            if (bi == 2 && (m.id == 1 || m.id == 3)) {
+            if ( bi == 2 && (m.id == 1 || m.id == 3)) {
                 return;
             }
 
              //getLineCoordsDown getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1)
             if (m.id == 0 || m.id == 1) {
+
+
+
                 var blks = _.filter(BLOCKS, function(m) {return m != b;});
                 var up = getLineCoordsUp(b, m.id, blks[0], blks[1]);
                 var down = getLineCoordsDown(b, m.id, blks[0], blks[1]);
@@ -374,7 +376,8 @@ function generateCells() {
                 CELL_LINES.push(missingCoords);
                 addCell(missingCoords);
 
-                addLeftCell(missingCoords);
+                if (up[3] + down[3] != CANVAS_HEIGHT) addLeftCell(missingCoords);
+                
             }
 
         });
@@ -470,7 +473,10 @@ function subDivide() {
         _.extend(BLOCKS[1], {
             bottomLeft: left,
             bottomRight: right
-        });        
+        });  
+
+        CELL_LINES.push(left);
+        CELL_LINES.push(right);      
     }
 
     if (BLOCKS[2].points[2].y != bottom) {
@@ -486,7 +492,7 @@ function subDivide() {
     }
 
 
-    // Add bottom CELL_LINES
+    // Add top CELL_LINES
     if (BLOCKS[0].points[0].y != top) {
         left = getLineCoordsUp(BLOCKS[0], 0, BLOCKS[1], BLOCKS[2]);
         right =getLineCoordsUp(BLOCKS[0], 1, BLOCKS[1], BLOCKS[2]);
@@ -583,15 +589,15 @@ function recursiveDFS(node, end) {
     _.extend(node,{visited: true});
 
     var testEnd = _.find(node.adjacencyList, function(n) {return n == end;});
-    if (testEnd) {
-        CELLS[end].parent.push(node.id);
-        _.forEach(CELLS, function(c) {
-            _.extend(c, {
-                visited:true
-            });
-        });
-        return;
-    }
+    // if (testEnd) {
+    //     CELLS[end].parent.push(node.id);
+    //     _.forEach(CELLS, function(c) {
+    //         _.extend(c, {
+    //             visited:true
+    //         });
+    //     });
+    //     return;
+    // }
 
 
    _.forEach(node.adjacencyList, function(adj) {
@@ -732,6 +738,7 @@ function drawSolution(solution) {
 function solve() {
     subDivide();
     drawCells();
+    console.log(CELL_LINES);
     findAdjacencies();
     var solution = searchGraph();
     drawSolution(solution);
