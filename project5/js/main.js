@@ -10,26 +10,7 @@ var LEFT_CELL = false;
 var RIGHT_CELL = false;
 
 //block variable
-var BLOCKS = [
-	{
-		id:"block-1",
-		size: 200,
-		x:300,
-		y:300
-	},
-	{
-		id:"block-2",
-		size:150,
-		x:50,
-		y:350
-	},
-	{
-		id:"block-3",
-		size:100,
-		x: 280,
-		y:145
-	}
-];
+var BLOCKS = []
 
 var START_POINT = {
 	x:40,
@@ -47,9 +28,35 @@ var END_POINT = {
  * setup code
 */   
 function setup() {
+
+    BLOCKS = [
+    {
+        id:"block-1",
+        size: 200,
+        x:150,
+        y:0
+    },
+    {
+        id:"block-2",
+        size:150,
+        x:300,
+        y:250
+    },
+    {
+        id:"block-3",
+        size:100,
+        x: 150,
+        y:340
+    }
+    ];
+
+
+
+
+
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
-	// noLoop();
+	noLoop();
     POINTS = [];
 
     // subDivide();
@@ -94,7 +101,7 @@ function resetSim() {
     CELL_LINES = [];
     LEFT_CELL = false;
     RIGHT_CELL = false; 
-    clear();
+    // clear();
     redraw();   
 }
 
@@ -166,8 +173,8 @@ function generatePoints(block) {
 
 // given a src point, draw a line down as far as possible
 function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
-    var collide0 = (iBlock0.points[0].x < srcBlock.points[srcPt].x && iBlock0.points[1].x >= srcBlock.points[srcPt].x && iBlock0.y > srcBlock.y);
-    var collide1 = (iBlock1.points[0].x < srcBlock.points[srcPt].x && iBlock1.points[1].x >= srcBlock.points[srcPt].x && iBlock1.y > srcBlock.y);
+    var collide0 = (iBlock0.points[0].x < srcBlock.points[srcPt].x && iBlock0.points[1].x >= srcBlock.points[srcPt].x && iBlock0.y >= srcBlock.y);
+    var collide1 = (iBlock1.points[0].x < srcBlock.points[srcPt].x && iBlock1.points[1].x >= srcBlock.points[srcPt].x && iBlock1.y >= srcBlock.y);
     var line = [];
 
 
@@ -404,7 +411,7 @@ function generateCells() {
         if (CELL_LINES[i].length < 5) addCell(CELL_LINES[i]);
     }
 
-
+    console.log(CELL_LINES);
     var badCells = [];
     _.forEach(CELLS, function(cell) {
         // if cell is bounded by bigger cell, remove it
@@ -424,6 +431,16 @@ function generateCells() {
             //get biggest
             var biggestCell = cell;
             _.forEach(bc, function(badCell) {
+                if (((badCell.left[0] == BLOCKS[0].x && badCell.right[0] == BLOCKS[0].points[1].x) ||
+                                    (badCell.left[0] == BLOCKS[1].x && badCell.right[0] == BLOCKS[1].points[1].x) ||
+                                    (badCell.left[0] == BLOCKS[2].x && badCell.right[0] == BLOCKS[2].points[1].x) 
+                                    ) &&
+                    (Math.abs(badCell.left[1] - badCell.left[3]) == CANVAS_HEIGHT)
+                    ) {
+                    badCells.push(badCell);
+                    return;
+                }
+
                 var maxYBad = min(badCell.left[1], badCell.left[3]);
                 var minYBad = max(badCell.left[1], badCell.left[3]);
 
@@ -667,15 +684,6 @@ function recursiveDFS(node, end) {
     _.extend(node,{visited: true});
 
     var testEnd = _.find(node.adjacencyList, function(n) {return n == end;});
-    // if (testEnd) {
-    //     CELLS[end].parent.push(node.id);
-    //     _.forEach(CELLS, function(c) {
-    //         _.extend(c, {
-    //             visited:true
-    //         });
-    //     });
-    //     return;
-    // }
 
 
    _.forEach(node.adjacencyList, function(adj) {
@@ -728,7 +736,11 @@ function searchGraph() {
 
     var start_cell = findCell(START_POINT);
     var end_cell = findCell(END_POINT);
-    return cellDFS(start_cell, end_cell);
+
+    if (start_cell == end_cell) {
+        return [];
+    }
+    else return cellDFS(start_cell, end_cell);
 }
 
 function getDirection(start, end) {
@@ -782,7 +794,6 @@ function drawSolution(solution) {
         var vertical = overOrUnder(current_pt, orientation.coord);
         if (vertical == "over") {
             current_pt.y += (direction[3] - current_pt.y - ((direction[3] - direction[1]) / 2));
-            // current_pt.y += (dist(current_pt.x, current_pt.y, direction[2], direction[3]) + (dist(direction[0], direction[1], direction[2], direction[3])  / 2));
         }
         else if (vertical == "under") {
             current_pt.y -= (direction[3] + current_pt.y + ((direction[3] - direction[1]) / 2));      
