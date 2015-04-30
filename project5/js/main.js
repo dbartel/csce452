@@ -14,7 +14,7 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:10,
+		x:0,
 		y:20
 	},
 	{
@@ -288,13 +288,13 @@ function generateCells() {
 
     var itStart = 0;
     if (LEFT_CELL) {
-        itStart += 1;
+        itStart += 2;
     }
     if (RIGHT_CELL) {
         itStart += 2;
     }
 //3
-    for (var i = 3; i < CELL_LINES.length; i++) {
+    for (var i = itStart; i < CELL_LINES.length; i++) {
         addCell(CELL_LINES[i]);
     }
 
@@ -341,6 +341,9 @@ function generateCells() {
                 var missingCoords = [ up[2], up[3], down[2], down[3] ];
                 CELL_LINES.push(missingCoords);
                 addCell(missingCoords);
+
+
+
                 addLeftCell(missingCoords);
             }
 
@@ -378,6 +381,8 @@ function subDivide() {
 
     //add leftmost (border + left edge)
 
+
+
     if (BLOCKS[0].points[0].x > 0) {
         CELL_LINES.push([0, top, top, bottom]);
         CELL_LINES.push([BLOCKS[0].points[0].x, top, BLOCKS[0].points[0].x, bottom]);
@@ -394,15 +399,19 @@ function subDivide() {
     if (BLOCKS[2].points[3].x < CANVAS_WIDTH) {
         CELL_LINES.push([BLOCKS[2].points[3].x, top, BLOCKS[2].points[3].x, bottom]);
         CELL_LINES.push([CANVAS_WIDTH, top, CANVAS_WIDTH, bottom]);
-        CELLS.push({
-            left: CELL_LINES[2],
-            right: CELL_LINES[3]
-        });
+        if (LEFT_CELL) {
+            CELLS.push({
+                left: CELL_LINES[2],
+                right: CELL_LINES[3]
+            });
+        } else {
+            CELLS.push({
+                left: CELL_LINES[0],
+                right: CELL_LINES[1]
+            });
+        }
         RIGHT_CELL = true;
     }
-
-    // BLOCKS[0].points[0].processed += 1;
-    // BLOCKS[0].points[2].processed += 1;
 
     var left, right;
 
