@@ -97,9 +97,7 @@ function findPath(x,y)
 //Cell decomp method
 function decomp(){
 	//Find cells
-	var collisionPathA = createVector(0,0);
-	var collisionPathB = createVector(0,0);
-	var collisionPathC = createVector(0,0);
+	
 	var first,second,third;
 	
 	//Find leftmost square 
@@ -116,10 +114,62 @@ function decomp(){
 		}
 	}
 	second = 0;
-	for (var i=0; i < 3; i++){
+	for (var i=0; i < 3; i++)
+	{
 		if (first + i + third == 3) second = i;		
 	}
-
+	var collisionPathA = createVector(BLOCKS[first].x,BLOCKS[first].y);
+	var collisionPathB = createVector(BLOCKS[second].x,BLOCKS[second].y);
+	var collisionPathC = createVector(BLOCKS[third].x,BLOCKS[third].y);
 	
-	
+	var numberLine = [];
+	for(var i = 0;i<501;i++)
+	{
+		var help = createVector(0,0,0);
+		if(i>=collisionPathA.x&&i<=collisionPathA.x+BLOCKS[first].size)
+		{
+			help.x=1;
+		}
+		if(i>=collisionPathB.x&&i<=collisionPathB.x+BLOCKS[second].size)
+		{
+			help.y=1;
+		}
+		if(i>=collisionPathC.x&&i<=collisionPathC.x+BLOCKS[third].size)
+		{
+			help.z=1;
+		}
+	}
+	var down=false;
+	var working = false;
+	var counter = 0;
+	var cells = [];
+	for(var i = 0;i<501;i++)
+	{
+		if(numberLine[i].x||numberLine[i].y||numberLine[i].z)
+		{
+			if(numberLine[i].x)
+			{
+				
+			}
+			else if(numberLine[i].y)
+			{
+				
+			}
+			else
+			{
+				
+			}
+		}
+		else
+		{
+			if(working)
+			{
+				
+			}
+			else
+			{
+				
+			}
+		}
+	}
 }
