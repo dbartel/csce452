@@ -56,6 +56,7 @@ function initListeners() {
 	
 	begin.addEventListener("click", function() {
         // decomp();
+        resetSim();
         solve();
     })
 
