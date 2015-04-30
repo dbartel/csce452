@@ -83,7 +83,7 @@ function drawPoints() {
 	fill(0);
 }
 
-
+// ...
 // Returns true if blocks overlap (x)
 function isOverlap(homeBlock, intrudingBlock, direction) {
     var overlap = "";
