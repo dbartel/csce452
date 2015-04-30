@@ -55,7 +55,8 @@ function initListeners() {
 	var begin = document.getElementById("begin");
 	
 	begin.addEventListener("click", function() {
-        decomp();
+        // decomp();
+        solve();
     })
 
 }

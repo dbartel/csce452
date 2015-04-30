@@ -4,6 +4,7 @@
         <title>Project 5</title>
         <link href="home.css" rel='stylesheet'>
         <script type="text/javascript" src="lib/p5.js"></script>
+	    <script type="text/javascript" src="lib/lodash.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/buttons.js"></script>
     </head>
@@ -27,7 +28,20 @@
                 <strong>End (click to change)</strong>
                 <div id="end">
                 </div>
-				<button  id="begin" class="btn">Find Path</button> <br>
+                <button  id="begin" class="btn">Find Path</button> <br>
+                <style>
+                    .inline {
+                        display:inline-block;
+                    }
+                    </style>
+    		<div class="inline" id="left">
+    		</div>
+    		<div class="inline" id="right">
+    		</div>
+
+            <div id="processed">
+            </div>
+            <div id="solution">
             </div>
 
         </div>

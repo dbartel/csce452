@@ -50,9 +50,9 @@ function setup() {
     createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
 	angleMode(DEGREES);
 	noLoop();
-    subDivide();
-    findAdjacencies();
-    searchGraph()
+    // subDivide();
+    // findAdjacencies();
+    // searchGraph()
 }
 
 /**
@@ -62,7 +62,7 @@ function draw() {
 	background(204);
 	drawBlocks();
 	drawPoints();
-    drawCells();
+    
 }
 
 
@@ -612,6 +612,7 @@ function drawSolution() {
 
 function solve() {
     subDivide();
+    drawCells();
     findAdjacencies();
     searchGraph();
     drawSolution();
