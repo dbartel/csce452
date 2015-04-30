@@ -15,19 +15,19 @@ var BLOCKS = [
 		id:"block-1",
 		size: 200,
 		x:300,
-		y:180
+		y:300
 	},
 	{
 		id:"block-2",
 		size:150,
 		x:50,
-		y:0
+		y:350
 	},
 	{
 		id:"block-3",
 		size:100,
-		x: 140,
-		y:300
+		x: 280,
+		y:145
 	}
 ];
 
@@ -80,7 +80,6 @@ function drawBlocks() {
 }
 
 function drawSolutionPoints() {
-    // console.log(POINTS);
     stroke(0,255,0);
     for (var i = 0; i < POINTS.length - 1; i++) {
         line(POINTS[i].x, POINTS[i].y, POINTS[i+1].x, POINTS[i+1].y);
@@ -171,9 +170,19 @@ function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
     var collide1 = (iBlock1.points[0].x < srcBlock.points[srcPt].x && iBlock1.points[1].x >= srcBlock.points[srcPt].x && iBlock1.y > srcBlock.y);
     var line = [];
 
+
+    var touch0 = (srcBlock.points[srcPt].y == iBlock0.points[0].y && iBlock0.points[0].x <= srcBlock.points[srcPt].x && iBlock0.points[1].x >= srcBlock.points[srcPt].x);
+    var touch1 = (srcBlock.points[srcPt].y == iBlock1.points[0].y && iBlock1.points[0].x <= srcBlock.points[srcPt].x && iBlock1.points[1].x >= srcBlock.points[srcPt].x);
+
+    if (touch0 || touch1) {
+        return [];
+    }
+
+
+
     if (!collide0 && !collide1) {
         //no collision draw straight down
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, CANVAS_HEIGHT, srcBlock.size];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, CANVAS_HEIGHT];
 
     }
     else if (collide0 && collide1) {
@@ -181,20 +190,20 @@ function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
         if (dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock0.points[0].x, iBlock0.points[0].y) <
             dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock1.points[0].x, iBlock1.points[0].y)) {
             //draw line to iBlock0
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y, srcBlock.size];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y];
         }
         else {
             // line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y];
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y, srcBlock.size];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y];
         }
     }
     else if (collide0) {
         //draw line to iBlock0
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y, srcBlock.size];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[0].y];
 
     }
     else if (collide1) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y, srcBlock.size];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[0].y];
 
     }
 
@@ -203,29 +212,35 @@ function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
 }
 
 function getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1) {
-    var collide0 = (iBlock0.y < srcBlock.y && iBlock0.points[2].x < srcBlock.points[srcPt].x && iBlock0.points[3].x > srcBlock.points[srcPt].x );
-    var collide1 = (iBlock1.y < srcBlock.y && iBlock1.points[2].x < srcBlock.points[srcPt].x && iBlock1.points[3].x > srcBlock.points[srcPt].x );
+    var collide0 = (iBlock0.y < srcBlock.y && iBlock0.points[2].x <= srcBlock.points[srcPt].x && iBlock0.points[3].x >= srcBlock.points[srcPt].x );
+    var collide1 = (iBlock1.y < srcBlock.y && iBlock1.points[2].x <= srcBlock.points[srcPt].x && iBlock1.points[3].x >= srcBlock.points[srcPt].x );
 
+    var touch0 = (srcBlock.y == iBlock0.points[2].y && iBlock0.points[2].x <= srcBlock.points[srcPt].x && iBlock0.points[3].x >= srcBlock.points[srcPt].x);
+    var touch1 = (srcBlock.y == iBlock1.points[2].y && iBlock1.points[2].x <= srcBlock.points[srcPt].x && iBlock1.points[3].x >= srcBlock.points[srcPt].x);
+
+    if (touch0 || touch1) {
+        return [];
+    }
 
     var line = [];
     if (!collide0 && !collide1) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, 0, srcBlock.size];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, 0];
     }
     else if (collide0 && collide1) {
         if (dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock0.points[2].x, iBlock0.points[2].y) <
             dist(srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, iBlock1.points[2].x, iBlock1.points[2].y)) {
 
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y, srcBlock.size];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y];
         }
         else {
-            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y, srcBlock.size];
+            line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y];
         }
     }
     else if (collide0) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y, srcBlock.size];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock0.points[2].y];
     }
     else if (collide1) {
-        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y, srcBlock.size];
+        line = [srcBlock.points[srcPt].x, srcBlock.points[srcPt].y, srcBlock.points[srcPt].x, iBlock1.points[2].y];
     }
 
     return line;
@@ -237,6 +252,7 @@ function getMatches(cline) {
     // 1. is to the right of our line
     // 2. has the same y values as our line
     // 3. doesn't hit any obstacles
+
     var matches = _.filter(CELL_LINES, function(c) {
         return (c[0] > cline[0])
         &&
@@ -314,10 +330,13 @@ function countProcessed() {
 }
 
 
+
 function generateCells() {
 
     _.forEach(BLOCKS, function(b, bi) {
         var blks = _.filter(BLOCKS, function(m) {return m != b;});
+
+
 
         if (b.points[0].y == 0) {
             ptOrigin = 2;
@@ -329,7 +348,18 @@ function generateCells() {
         if (bi != 0) {
             var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
             var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
-            var missingCoords = [ up[2], up[3], down[2], down[3] ];
+            var missingCoords = [ up[2], up[3], down[2], down[3], 1 ];
+
+            _.forEach(missingCoords, function(c, i) {
+                if (c == undefined) {
+                    var pts = b.points[ptOrigin];
+                    if (i == 0 || i == 2) c = pts.x;
+                    else c = pts.y;
+
+                    missingCoords[i] = c;
+                }
+            });
+
             CELL_LINES.push(missingCoords);
         }
 
@@ -345,10 +375,21 @@ function generateCells() {
             var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
             var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
             var missingCoords = [ up[2], up[3], down[2], down[3] ];
+
+            _.forEach(missingCoords, function(c, i) {
+                if (c == undefined) {
+                    var pts = b.points[i];
+                    if (i == 0 || i == 2) c = pts.x;
+                    else c = pts.y;
+
+                }
+            });
+
             CELL_LINES.push(missingCoords);
         }
-    })
 
+
+    });
 
 
     var itStart = 0;
@@ -358,98 +399,59 @@ function generateCells() {
     if (RIGHT_CELL) {
         itStart += 2;
     }
+
     for (var i = itStart; i < CELL_LINES.length; i++) {
-        addCell(CELL_LINES[i]);
+        if (CELL_LINES[i].length < 5) addCell(CELL_LINES[i]);
     }
 
-    countProcessed();
 
-    // var missedCells = [];
+    var badCells = [];
+    _.forEach(CELLS, function(cell) {
+        // if cell is bounded by bigger cell, remove it
+        var bc = _.filter(CELLS, function(c) {
+            var maxYC = min(c.left[1], c.left[3]);
+            var minYC = max(c.left[1], c.left[3]);
 
-    // _.forEach(BLOCKS, function(b, bi) {
+            var maxYCell = min(cell.left[1], cell.left[3]);
+            var minYCell = max(cell.left[1], cell.left[3]);
 
-    //     console.log(bi + " " + b.points[0].processed + " " + b.points[1].processed + " " + b.points[2].processed + " " + b.points[3].processed )
+            return c.left[0] == cell.left[0] && 
+            c.right[0] == cell.right[0] &&
+            (maxYC == maxYCell || minYC == minYCell);
+        });
 
-    //     var blks = _.filter(BLOCKS, function(m) {return m != b;});
-    //     if (b.points[0].processed < 2 && b.points[2].processed < 2) {
-    //         console.log("LEFT");
-    //         var up = getLineCoordsUp(b, 0, blks[0], blks[1]);
-    //         var down = getLineCoordsDown(b, 0, blks[0], blks[1]);
-    //         var missingCoords = [ up[2], up[3], down[2], down[3] ]
-    //         CELL_LINES.push(missingCoords);
-    //         missedCells.push(missingCoords);
-    //         // addCell(missingCoords);
-    //         // addLeftCell(missingCoords);
-    //     }
+        if (bc) {
+            //get biggest
+            var biggestCell = cell;
+            _.forEach(bc, function(badCell) {
+                var maxYBad = min(badCell.left[1], badCell.left[3]);
+                var minYBad = max(badCell.left[1], badCell.left[3]);
 
-    //     if (b.points[1].processed < 2 && b.points[3].processed < 2) {
-    //         console.log("RIGHT");
+                var maxYBig = min(biggestCell.left[1], biggestCell.left[3]);
+                var minYBig = max(biggestCell.left[1], biggestCell.left[3]);
 
-    //         var ptOrigin;
-    //         if (b.points[1].y == 0) {
-    //             ptOrigin = 3;
-    //         }
-    //         else {
-    //             ptOrigin = 1;
-    //         }
+                if (maxYBad < maxYBig && minYBad > minYBig) {
+                    biggestCell = badCell;
+                }
 
-    //         var up = getLineCoordsUp(b, ptOrigin, blks[0], blks[1]);
-    //         var down = getLineCoordsDown(b, ptOrigin, blks[0], blks[1]);
+                badCells = badCells.concat(bc);
+                _.remove(badCells, function(bcc) { 
+                    return _.isEqual(bcc, biggestCell);
+                });
+            });
+        }
 
-    //         var missingCoords = [ up[2], up[3], down[2], down[3] ]
-    //         CELL_LINES.push(missingCoords);
-    //         missedCells.push(missingCoords);
-    //         // addCell(missingCoords); 
-    //         // addLeftCell(missingCoords);
-    //     }
+    });
 
-    // });
-
-
-    
-
-    // missedCells.reverse();
-    // _.forEach(missedCells, function(m) {
-    //     addCell(m);
-    //     addLeftCell(m);
-    // })
+    _.forEach(badCells, function(bc) {
+        _.remove(CELLS, function(c) {
+            return _.isEqual(c, bc);
+        });
+    });
 
 
 
-    // var missedCells = [];
-    // _.forEach(BLOCKS, function(b, bi) {
-    //     var missedCells = _.filter(b.points, function(b) {
-    //         return b.processed < 2;
-    //     });
 
-
-    //     _.forEach(missedCells, function(m) {
-    //         if ( bi == 0 && (m.id == 0 || m.id == 2)) {
-    //             return;
-    //         }
-    //         if ( bi == 2 && (m.id == 1 || m.id == 3)) {
-    //             return;
-    //         }
-
-    //          //getLineCoordsDown getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1)
-    //         if (m.id == 0 || m.id == 1) {
-
-
-
-    //             var blks = _.filter(BLOCKS, function(m) {return m != b;});
-    //             var up = getLineCoordsUp(b, m.id, blks[0], blks[1]);
-    //             var down = getLineCoordsDown(b, m.id, blks[0], blks[1]);
-    //             var missingCoords = [ up[2], up[3], down[2], down[3] ];
-    //             CELL_LINES.push(missingCoords);
-    //             addCell(missingCoords);
-
-
-    //             addLeftCell(missingCoords);
-                
-    //         }
-
-    //     });
-    // });
     CELLS = _.uniq(CELLS, function(c) {
         return JSON.stringify(c);
     });
@@ -479,8 +481,10 @@ function subDivide() {
     var bottom = CANVAS_HEIGHT;
 
     BLOCKS = _.sortBy(BLOCKS, function(b) {
-        return b.x
+        return b.x + b.size;
     });
+
+
 
 
     //add leftmost (border + left edge)
@@ -598,6 +602,7 @@ function subDivide() {
         CELL_LINES.push(right);                
     }
 
+    _.remove(CELL_LINES, function(n) {return n.length == 0;});
 
     generateCells();
 
@@ -700,14 +705,14 @@ function cellDFS(start, end) {
 
     var solution = [];
     var tmpCell = end;
-    console.log(tmpCell);
+
 
     do  {
         solution.push(tmpCell.id);
         tmpCell = CELLS[tmpCell.parent];
     } while (tmpCell != start);
     solution.reverse();
-    console.log(solution);
+
 
 
         var sn = document.getElementById("solution");
@@ -720,7 +725,7 @@ function cellDFS(start, end) {
 
 //Use some sort of search algorithm to find a solution
 function searchGraph() {
-    // console.log(CELLS);
+
     var start_cell = findCell(START_POINT);
     var end_cell = findCell(END_POINT);
     return cellDFS(start_cell, end_cell);
@@ -776,12 +781,10 @@ function drawSolution(solution) {
 
         var vertical = overOrUnder(current_pt, orientation.coord);
         if (vertical == "over") {
-            console.log("over " + s);
             current_pt.y += (direction[3] - current_pt.y - ((direction[3] - direction[1]) / 2));
             // current_pt.y += (dist(current_pt.x, current_pt.y, direction[2], direction[3]) + (dist(direction[0], direction[1], direction[2], direction[3])  / 2));
         }
         else if (vertical == "under") {
-            console.log("under " + s);
             current_pt.y -= (direction[3] + current_pt.y + ((direction[3] - direction[1]) / 2));      
         }
 
@@ -801,7 +804,6 @@ function drawSolution(solution) {
 
     POINTS.push(END_POINT);
 
-    console.log(POINTS);
     redraw();
 
 

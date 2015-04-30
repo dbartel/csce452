@@ -31,6 +31,7 @@ function initButton(bid, spid) {
 
 function initListeners() {
 
+
 	var begin = document.getElementById("begin");
 	
 	begin.addEventListener("click", function() {
