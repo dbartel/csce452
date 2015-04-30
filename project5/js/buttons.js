@@ -12,7 +12,7 @@ function listElements(parentId, arr) {
             dv.addEventListener("click", function() {
                 // removeElement(dv.id, parentId, arr);
                 console.log(this.id);
-                var it = this.id.substr(6,1);
+                var it = Number(this.id.substr(6,1)) - 1;
                 var newX = window.prompt("Enter new x");
                 var newY = window.prompt("Enter new y");
                 window[arr][it].x = newX;
