@@ -14,14 +14,14 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:0,
-		y:20
+		x:20,
+		y:0
 	},
 	{
 		id:"block-2",
 		size:150,
 		x:200,
-		y:240
+		y:235
 	},
 	{
 		id:"block-3",
@@ -342,8 +342,6 @@ function generateCells() {
                 CELL_LINES.push(missingCoords);
                 addCell(missingCoords);
 
-
-
                 addLeftCell(missingCoords);
             }
 
@@ -587,6 +585,12 @@ function cellDFS(start, end) {
     solution.reverse();
     console.log(solution);
     console.log(CELLS);
+    window.setTimeout(function() {
+
+        var sn = document.getElementById("solution");
+        sn.innerHTML += "SOLUTION : " + solution.join(" -> ");
+
+    }, 1500);
 }
 
 
