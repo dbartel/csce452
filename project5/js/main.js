@@ -711,7 +711,7 @@ function cellDFS(start, end) {
 
 
         var sn = document.getElementById("solution");
-        sn.innerHTML += "SOLUTION : " + solution.join(" -> ");
+        sn.innerHTML = "SOLUTION : " + solution.join(" -> ");
 
 
     return solution;
