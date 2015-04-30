@@ -14,7 +14,7 @@ var BLOCKS = [
 	{
 		id:"block-1",
 		size: 200,
-		x:20,
+		x:10,
 		y:20
 	},
 	{
@@ -81,10 +81,21 @@ function drawBlocks() {
 
 function drawSolutionPoints() {
     // console.log(POINTS);
+    stroke(0,255,0);
     for (var i = 0; i < POINTS.length - 1; i++) {
         line(POINTS[i].x, POINTS[i].y, POINTS[i+1].x, POINTS[i+1].y);
     }
+    stroke(0);
     if (POINTS != []) noLoop();
+}
+
+function resetSim() {
+    CELLS = [];
+    POINTS = [];
+    LEFT_CELL = false;
+    RIGHT_CELL = false; 
+    clear();
+    redraw();   
 }
 
 
@@ -219,8 +230,9 @@ function getLineCoordsDown(srcBlock, srcPt, iBlock0, iBlock1) {
 }
 
 function getLineCoordsUp(srcBlock, srcPt, iBlock0, iBlock1) {
-    var collide0 = (iBlock0.y < srcBlock.y && iBlock0.points[2].x < srcBlock.points[srcPt].x && iBlock0.points[3].x >= srcBlock.points[srcPt].x );
-    var collide1 = (iBlock1.y < srcBlock.y && iBlock1.points[2].x < srcBlock.points[srcPt].x && iBlock1.points[3].x >= srcBlock.points[srcPt].x );
+    var collide0 = (iBlock0.y < srcBlock.y && iBlock0.points[2].x < srcBlock.points[srcPt].x && iBlock0.points[3].x > srcBlock.points[srcPt].x );
+    var collide1 = (iBlock1.y < srcBlock.y && iBlock1.points[2].x < srcBlock.points[srcPt].x && iBlock1.points[3].x > srcBlock.points[srcPt].x );
+
 
     var line = [];
     if (!collide0 && !collide1) {
@@ -296,21 +308,7 @@ function addCell(cline) {
     }
 }
 
-
-function generateCells() {
-
-    var itStart = 0;
-    if (LEFT_CELL) {
-        itStart += 2;
-    }
-    if (RIGHT_CELL) {
-        itStart += 2;
-    }
-//3
-    for (var i = itStart; i < CELL_LINES.length; i++) {
-        addCell(CELL_LINES[i]);
-    }
-
+function countProcessed() {
     //build cells that filter missed
     _.forEach(BLOCKS, function(b, bi) {
         _.forEach(b.points, function(p, pi) {
@@ -321,14 +319,35 @@ function generateCells() {
                     p.processed += 1;
                 }
 
-                // special case for ends
-                if ( LEFT_CELL && (bi == 0) && (pi == 0 || pi == 2) && (ci == 0)) p.processed += 1;
-                if ( RIGHT_CELL && (bi == 2) && (pi == 1 || pi == 4) && (ci == 0)) p.processed += 1;
 
-            });            
+
+                // special case for ends
+                if ( (bi == 0) && (pi == 0 || pi == 2) && (ci == 0)) p.processed += 1;
+                if ( (bi == 2) && (pi == 1 || pi == 3) && (ci == 0)) p.processed += 1;
+
+            });
         });
 
     });
+
+}
+
+
+function generateCells() {
+
+    var itStart = 0;
+    if (LEFT_CELL) {
+        itStart += 2;
+    }
+    if (RIGHT_CELL) {
+        itStart += 2;
+    }
+    for (var i = itStart; i < CELL_LINES.length; i++) {
+        addCell(CELL_LINES[i]);
+    }
+
+    countProcessed();
+
 
 
     var missedCells = [];
@@ -360,6 +379,9 @@ function generateCells() {
 
         });
     });
+    CELLS = _.uniq(CELLS, function(c) {
+        return JSON.stringify(c);
+    })
 
     CELLS = _.sortBy(CELLS, function(c) {
         return c.left[0];
@@ -369,7 +391,7 @@ function generateCells() {
         _.extend(c, {
             id: n
         });
-    })
+    });
 
 }
 
@@ -506,7 +528,6 @@ function subDivide() {
     generateCells();
 
 
-    window.setTimeout(function() {
     	var lf = document.getElementById("left");
     	var rt = document.getElementById("right");
     	_.forEach(CELLS, function(c, i) {
@@ -517,7 +538,6 @@ function subDivide() {
         _.forEach(BLOCKS, function(c,i) {
             pr.innerHTML += i + "-" + c.points[0].processed + " " +  c.points[1].processed + " " +  c.points[2].processed + " " + c.points[3].processed + "<br>";
         });
-    }, 1500);
 
 
 
@@ -610,12 +630,10 @@ function cellDFS(start, end) {
     console.log(solution);
     console.log(CELLS);
 
-    window.setTimeout(function() {
 
         var sn = document.getElementById("solution");
         sn.innerHTML += "SOLUTION : " + solution.join(" -> ");
 
-    }, 1500);
 
     return solution;
 }
